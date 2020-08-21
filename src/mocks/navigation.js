@@ -1,8 +1,13 @@
-import {getRandomArrayElement, createRandomNumber} from "../random.js";
+import {
+  getRandomArrayElement,
+  createRandomNumber
+} from "../lib/random.js";
+
+import {capitalize} from "../lib/util.js";
 
 const NAVIGATION = [`all`, `watchlist`, `history`, `favorites`];
 
-const capitalize = (string) => string.charAt(0).toUpperCase() + string.slice(1);
+
 const addMoviesAnding = (name) => name === `all` ? name + ` movies` : name;
 
 const createDescription = (name) => {
