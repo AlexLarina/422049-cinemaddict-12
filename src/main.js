@@ -8,8 +8,10 @@ import createFilmPopupTemplate from "./view/film-popup.js";
 import creatFilmDataArray from "./mocks/films.js";
 import createNavigation from "./mocks/navigation.js";
 import createFilmPopupData from "./mocks/film-popup.js";
+import createCommentsDataArray from "./mocks/comments.js";
 
 const FILM_CARDS_AMOUNT = 5;
+const COMMENTS_POPUP_AMOUNT = 4;
 
 const mainHeaderElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -30,6 +32,7 @@ const filmData = creatFilmDataArray(FILM_CARDS_AMOUNT);
 renderTemplate(mainElement, createFilmSectionTemplate(filmData));
 
 const filmPopupData = createFilmPopupData();
-renderTemplate(mainElement, createFilmPopupTemplate(filmPopupData));
+const commentsPopupData = createCommentsDataArray(COMMENTS_POPUP_AMOUNT);
+renderTemplate(mainElement, createFilmPopupTemplate(filmPopupData, commentsPopupData));
 
 renderTemplate(mainFooterElement, createStatsTemplate());
