@@ -4,7 +4,7 @@ import {
   createElement}
   from "../lib/util.js";
 
-const createFilmPopupTemplate = (film, comments) => {
+const createFilmPopupTemplate = (film) => {
   return (
     `<section class="film-details">
       <form class="film-details__inner" action="" method="get">
@@ -85,7 +85,7 @@ const createFilmPopupTemplate = (film, comments) => {
         </div>
 
         <div class="form-details__bottom-container">
-          ${createCommentsTemplate(comments)}
+          ${createCommentsTemplate(film.comments)}
         </div>
       </form>
     </section>`
@@ -93,14 +93,13 @@ const createFilmPopupTemplate = (film, comments) => {
 };
 
 class FilmPopup {
-  constructor(film, comments) {
+  constructor(film) {
     this._film = film;
-    this._comments = comments;
     this._element = null;
   }
 
   getTemplate() {
-    return createFilmPopupTemplate(this._film, this._comments);
+    return createFilmPopupTemplate(this._film);
   }
 
   getElement() {

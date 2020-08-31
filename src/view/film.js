@@ -1,4 +1,5 @@
 import {createElement} from "../lib/util.js";
+// import FilmPopupView from "./film-popup.js";
 
 const createFilmCardTemplate = (film) => {
   return (
@@ -31,6 +32,10 @@ class Film {
   getTemplate() {
     return createFilmCardTemplate(this._film);
   }
+
+  // showFilmPopup() {
+  //   this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this.handleClick);
+  // }
 
   getElement() {
     if (!this._element) {

@@ -1,15 +1,8 @@
-import FilmView from "./film.js";
 import FilmBoardSpecialView from "./film-board-special.js";
-//import createExtraFilmListTemplate from "./film-board-special.js";
 
 import {createElement} from "../lib/util.js";
 
 const EXTRA_FILM_CARDS_AMOUNT = 2;
-
-const createFilmBunchTemplate = (films) => films.map((film) => new FilmView(film).getTemplate()).join(``);
-
-// ${createExtraFilmListTemplate(`Top rated`, films.slice(0, EXTRA_FILM_CARDS_AMOUNT))}
-// ${createExtraFilmListTemplate(`Most commented`, films.slice(0, EXTRA_FILM_CARDS_AMOUNT))}
 
 const createFilmSectionTemplate = (films) => {
   return (
@@ -18,7 +11,7 @@ const createFilmSectionTemplate = (films) => {
         <h2 class="films-list__title visually-hidden">All movies. Upcoming</h2>
 
         <div class="films-list__container">
-          ${createFilmBunchTemplate(films)}
+
         </div>
         <button class="films-list__show-more">Show more</button>
       </section>

@@ -1,5 +1,4 @@
 import {
-  renderTemplate,
   renderElement
 } from "./lib/util.js";
 
@@ -15,12 +14,9 @@ import FilmPopupView from "./view/film-popup.js";
 
 import creatFilmDataArray from "./mocks/films.js";
 import createNavigation from "./mocks/navigation.js";
-import createFilmPopupData from "./mocks/film-popup.js";
-import createCommentsDataArray from "./mocks/comments.js";
 
 const FILM_CARDS_AMOUNT = 8;
 const MAX_CARDS_SHOWN_PER_STEP = 5;
-const COMMENTS_POPUP_AMOUNT = 4;
 
 const mainHeaderElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -28,13 +24,42 @@ const mainFooterElement = document.querySelector(`.footer`);
 
 const navigation = createNavigation();
 const filmData = creatFilmDataArray(FILM_CARDS_AMOUNT);
-const filmPopupData = createFilmPopupData();
-const commentsPopupData = createCommentsDataArray(COMMENTS_POPUP_AMOUNT);
+
 
 let renderedFilmCount = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ? null : MAX_CARDS_SHOWN_PER_STEP;
 
 const hideShowMoreButton = (button) => {
   button.setAttribute(`style`, `display: none;`);
+};
+
+const createFilmBunchFragment = (data) => {
+  const fragment = new DocumentFragment(); // const ? let
+
+  data.forEach(function (filmDataItem) {
+    const filmComponent = new FilmView(filmDataItem);
+    const filmPopupComponent = new FilmPopupView(filmDataItem);
+
+    filmPopupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
+      mainElement.removeChild(filmPopupComponent.getElement());
+      // renderElement(mainElement, FilmPopupComponent.getElement());
+    });
+
+    filmComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+      renderElement(mainElement, filmPopupComponent.getElement());
+    });
+
+    filmComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
+      renderElement(mainElement, filmPopupComponent.getElement());
+    });
+
+    filmComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
+      renderElement(mainElement, filmPopupComponent.getElement());
+    });
+
+    fragment.appendChild(filmComponent.getElement());
+  });
+
+  return fragment;
 };
 
 renderElement(mainHeaderElement, new ProfileView().getElement());
@@ -47,7 +72,12 @@ let filmDataChunk = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ?
   filmData.slice(0, MAX_CARDS_SHOWN_PER_STEP);
 
 const filmBoardComponent = new FilmBoardView(filmDataChunk);
+
 renderElement(mainElement, filmBoardComponent.getElement());
+renderElement(
+    filmBoardComponent.getContainer(),
+    createFilmBunchFragment(filmDataChunk)
+);
 
 const showMoreButtonElement = filmBoardComponent.getShowMoreButton();
 
@@ -60,24 +90,13 @@ showMoreButtonElement.addEventListener(`click`, (evt) => {
 
   filmDataChunk = filmData.slice(renderedFilmCount, renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP);
   renderedFilmCount += MAX_CARDS_SHOWN_PER_STEP;
-  const fragment = new DocumentFragment(); // const ? let
-
-  filmDataChunk.forEach(function (filmDataItem) {
-    fragment.appendChild(
-        new FilmView(filmDataItem).getElement()
-    );
-  });
 
   renderElement(
       filmBoardComponent.getContainer(),
-      fragment
+      createFilmBunchFragment(filmDataChunk)
   );
 
   if (renderedFilmCount > filmData.length) {
     hideShowMoreButton(showMoreButtonElement);
   }
 });
-
-renderElement(mainElement, new FilmPopupView(filmPopupData, commentsPopupData).getElement());
-
-//renderTemplate(mainElement, createFilmPopupTemplate(filmPopupData, commentsPopupData));

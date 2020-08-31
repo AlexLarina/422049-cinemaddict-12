@@ -1,6 +1,5 @@
 import {createElement} from "../lib/util.js";
 import FilmView from "./film.js";
-//import createFilmCardTemplate from "./film.js";
 
 const createExtraFilmListTemplate = (heading, films) => {
   return (
