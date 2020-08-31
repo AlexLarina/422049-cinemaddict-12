@@ -2,7 +2,7 @@ import {
   createRandomNumber,
   getRandomArrayElement,
   getRandomArrayItems
-} from '../lib/random.js';
+} from "../lib/random.js";
 
 import {
   createDuration,
@@ -47,8 +47,25 @@ const createFilmPopupData = () => {
     country: `USA`,
     genres: getRandomArrayItems(GENRE, createRandomNumber(1, GENRE.length)),
     description: createDescription(DESCRIPTION_TEMPLATE),
-    ageRating: `18`
+    ageRating: `18`,
+    comments: [],
+    year: createRandomNumber(RELEASE_YEARS.START, RELEASE_YEARS.END)
   };
 };
+
+
+// const createFilmData = () => ({
+//   title: TITLES[getRandomArrayElement(Object.keys(TITLES))],
+//   poster: getRandomArrayElement(POSTER_TITLES),
+//   description: createDescription(DESCRIPTION_TEMPLATE),
+//   comments: [],
+//   rating: createRandomNumber(),
+//   year: createRandomNumber(RELEASE_YEARS.START, RELEASE_YEARS.END),
+//   duration: createDuration(createRandomNumber(
+//       DURATION.MIN,
+//       DURATION.MAX
+//   )),
+//   genre: getRandomArrayElement(GENRE)
+// });
 
 export default createFilmPopupData;

@@ -1,3 +1,5 @@
+import {createElement} from "../lib/util.js";
+
 const createUserProfileTemplate = () => {
   return (
     `<section class="header__profile profile">
@@ -13,4 +15,27 @@ const createUserProfileTemplate = () => {
   );
 };
 
-export default createUserProfileTemplate;
+class Profile {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createUserProfileTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default Profile;
+

@@ -1,7 +1,7 @@
 import {
   createRandomNumber,
   getRandomArrayElement
-} from '../lib/random.js';
+} from "../lib/random.js";
 
 import {
   createDuration,

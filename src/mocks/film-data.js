@@ -1,4 +1,7 @@
-import {getRandomArrayItems, createRandomNumber} from "../lib/random.js";
+import {
+  getRandomArrayItems,
+  createRandomNumber
+} from "../lib/random.js";
 
 const DESCRIPTION_TEMPLATE = `
   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -38,18 +41,6 @@ const POSTER_TITLES = [
   `the-great-flamarion.jpg`,
   `the-man-with-the-golden-arm.jpg`
 ];
-
-// const TITLES = [
-//   `Доказательство смерти`,
-//   `Однажды… в Голливуде`,
-//   `Омерзительная восьмерка`,
-//   `Джанго освобожденный`,
-//   `Джеки Браун`,
-//   `Убить Билла`,
-//   `Бесславные ублюдки`,
-//   `Криминальное чтиво`,
-//   `Бешеные псы`
-// ];
 
 const TITLES = {
   'Reservoir Dogs': `Бешеные псы`,

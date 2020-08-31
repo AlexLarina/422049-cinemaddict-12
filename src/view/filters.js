@@ -1,3 +1,5 @@
+import {createElement} from "../lib/util.js";
+
 const createFiltersTemplate = () => {
   return (
     `<ul class="sort">
@@ -8,4 +10,26 @@ const createFiltersTemplate = () => {
   );
 };
 
-export default createFiltersTemplate;
+class Filters {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFiltersTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default Filters;

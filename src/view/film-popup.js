@@ -1,5 +1,8 @@
 import createCommentsTemplate from "./comments.js";
-import {capitalize} from "../lib/util.js";
+import {
+  capitalize,
+  createElement}
+  from "../lib/util.js";
 
 const createFilmPopupTemplate = (film, comments) => {
   return (
@@ -89,4 +92,28 @@ const createFilmPopupTemplate = (film, comments) => {
   );
 };
 
-export default createFilmPopupTemplate;
+class FilmPopup {
+  constructor(film, comments) {
+    this._film = film;
+    this._comments = comments;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopupTemplate(this._film, this._comments);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
+export default FilmPopup;
