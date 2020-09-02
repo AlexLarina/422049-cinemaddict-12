@@ -8,6 +8,10 @@ const renderElement = (container, element) => {
   container.append(element);
 };
 
+const renderComponent = (container, component) => {
+  container.append(component.getElement());
+};
+
 const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
@@ -15,4 +19,4 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
-export {capitalize, renderTemplate, createElement, renderElement};
+export {capitalize, renderTemplate, createElement, renderElement, renderComponent};

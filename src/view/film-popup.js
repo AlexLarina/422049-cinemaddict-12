@@ -92,7 +92,7 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-class FilmPopup {
+export default class FilmPopup {
   constructor(film) {
     this._film = film;
     this._element = null;
@@ -115,4 +115,3 @@ class FilmPopup {
   }
 }
 
-export default FilmPopup;

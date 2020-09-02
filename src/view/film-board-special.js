@@ -14,7 +14,7 @@ const createExtraFilmListTemplate = (heading, films) => {
   );
 };
 
-class FilmBoardSpecial {
+export default class FilmBoardSpecial {
   constructor(heading, films) {
     this._heading = heading;
     this._films = films;
@@ -38,4 +38,3 @@ class FilmBoardSpecial {
   }
 }
 
-export default FilmBoardSpecial;

@@ -20,7 +20,7 @@ const createNavigationTemplate = (navigation) => {
   );
 };
 
-class Navigation {
+export default class Navigation {
   constructor(navigation) {
     this._element = null;
     this._navigation = navigation;
@@ -43,4 +43,3 @@ class Navigation {
   }
 }
 
-export default Navigation;

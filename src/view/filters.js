@@ -10,7 +10,7 @@ const createFiltersTemplate = () => {
   );
 };
 
-class Filters {
+export default class Filters {
   constructor() {
     this._element = null;
   }
@@ -32,4 +32,3 @@ class Filters {
   }
 }
 
-export default Filters;

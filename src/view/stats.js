@@ -8,7 +8,7 @@ const createStatsTemplate = () => {
   );
 };
 
-class Statistics {
+export default class Statistics {
   constructor() {
     this._element = null;
   }
@@ -30,4 +30,3 @@ class Statistics {
   }
 }
 
-export default Statistics;

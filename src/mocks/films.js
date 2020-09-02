@@ -33,7 +33,7 @@ const createReleaseDate = () => {
   `);
 };
 
-const createFilmPopupData = () => {
+const generateFilmMockData = () => {
   const originalFilm = getRandomArrayElement(Object.keys(TITLES));
   return {
     poster: getRandomArrayElement(POSTER_TITLES),
@@ -57,6 +57,6 @@ const createFilmPopupData = () => {
   };
 };
 
-const creatFilmDataArray = (size) => [...(new Array(size)).keys()].map(() => createFilmPopupData());
+const creatFilmDataArray = (size) => [...(new Array(size)).keys()].map(() => generateFilmMockData());
 
 export default creatFilmDataArray;

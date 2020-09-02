@@ -15,7 +15,7 @@ const createUserProfileTemplate = () => {
   );
 };
 
-class Profile {
+export default class Profile {
   constructor() {
     this._element = null;
   }
@@ -37,5 +37,4 @@ class Profile {
   }
 }
 
-export default Profile;
 

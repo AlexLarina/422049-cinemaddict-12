@@ -21,7 +21,7 @@ const createFilmSectionTemplate = (films) => {
   );
 };
 
-class FilmBoard {
+export default class FilmBoard {
   constructor(films) {
     this._films = films;
     this._element = null;
@@ -52,4 +52,3 @@ class FilmBoard {
   }
 }
 
-export default FilmBoard;

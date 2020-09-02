@@ -1,5 +1,6 @@
 import {
-  renderElement
+  renderElement,
+  renderComponent
 } from "./lib/util.js";
 
 import ProfileView from "./view/profile.js";
@@ -26,34 +27,33 @@ const navigation = createNavigation();
 const filmData = creatFilmDataArray(FILM_CARDS_AMOUNT);
 
 
-let renderedFilmCount = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ? null : MAX_CARDS_SHOWN_PER_STEP;
+let renderedFilmCount = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ? 0 : MAX_CARDS_SHOWN_PER_STEP;
 
 const hideShowMoreButton = (button) => {
   button.setAttribute(`style`, `display: none;`);
 };
 
-const createFilmBunchFragment = (data) => {
-  const fragment = new DocumentFragment(); // const ? let
+const renderFilms = (filmsData) => {
+  const fragment = new DocumentFragment();
 
-  data.forEach(function (filmDataItem) {
+  filmsData.forEach(function (filmDataItem) {
     const filmComponent = new FilmView(filmDataItem);
     const filmPopupComponent = new FilmPopupView(filmDataItem);
 
     filmPopupComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
       mainElement.removeChild(filmPopupComponent.getElement());
-      // renderElement(mainElement, FilmPopupComponent.getElement());
     });
 
     filmComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
-      renderElement(mainElement, filmPopupComponent.getElement());
+      renderComponent(mainElement, filmPopupComponent);
     });
 
     filmComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-      renderElement(mainElement, filmPopupComponent.getElement());
+      renderComponent(mainElement, filmPopupComponent);
     });
 
     filmComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-      renderElement(mainElement, filmPopupComponent.getElement());
+      renderComponent(mainElement, filmPopupComponent);
     });
 
     fragment.appendChild(filmComponent.getElement());
@@ -62,10 +62,10 @@ const createFilmBunchFragment = (data) => {
   return fragment;
 };
 
-renderElement(mainHeaderElement, new ProfileView().getElement());
-renderElement(mainElement, new NavigationView(navigation).getElement());
-renderElement(mainElement, new FiltersView().getElement());
-renderElement(mainFooterElement, new StatsView().getElement());
+renderComponent(mainHeaderElement, new ProfileView());
+renderComponent(mainElement, new NavigationView(navigation));
+renderComponent(mainElement, new FiltersView());
+renderComponent(mainFooterElement, new StatsView());
 
 let filmDataChunk = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ?
   filmData.slice(0, FILM_CARDS_AMOUNT) :
@@ -73,10 +73,10 @@ let filmDataChunk = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ?
 
 const filmBoardComponent = new FilmBoardView(filmDataChunk);
 
-renderElement(mainElement, filmBoardComponent.getElement());
+renderComponent(mainElement, filmBoardComponent);
 renderElement(
     filmBoardComponent.getContainer(),
-    createFilmBunchFragment(filmDataChunk)
+    renderFilms(filmDataChunk)
 );
 
 const showMoreButtonElement = filmBoardComponent.getShowMoreButton();
@@ -93,7 +93,7 @@ showMoreButtonElement.addEventListener(`click`, (evt) => {
 
   renderElement(
       filmBoardComponent.getContainer(),
-      createFilmBunchFragment(filmDataChunk)
+      renderFilms(filmDataChunk)
   );
 
   if (renderedFilmCount > filmData.length) {
