@@ -1,8 +1,6 @@
+import AbstractView from "./abstract.js";
 import createCommentsTemplate from "./comments.js";
-import {
-  capitalize,
-  createElement}
-  from "../lib/util.js";
+import {capitalize} from "../lib/util.js";
 
 const createFilmPopupTemplate = (film) => {
   return (
@@ -92,26 +90,14 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractView {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmPopupTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

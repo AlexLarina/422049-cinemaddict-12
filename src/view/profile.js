@@ -1,4 +1,4 @@
-import {createElement} from "../lib/util.js";
+import AbstractView from "./abstract.js";
 
 const createUserProfileTemplate = () => {
   return (
@@ -15,25 +15,9 @@ const createUserProfileTemplate = () => {
   );
 };
 
-export default class Profile {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Profile extends AbstractView {
   getTemplate() {
     return createUserProfileTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

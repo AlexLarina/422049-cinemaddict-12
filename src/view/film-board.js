@@ -1,6 +1,5 @@
+import AbstractView from "./abstract.js";
 import FilmBoardSpecialView from "./film-board-special.js";
-
-import {createElement} from "../lib/util.js";
 
 const EXTRA_FILM_CARDS_AMOUNT = 2;
 
@@ -21,22 +20,14 @@ const createFilmSectionTemplate = (films) => {
   );
 };
 
-export default class FilmBoard {
+export default class FilmBoard extends AbstractView {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmSectionTemplate(this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
   }
 
   getContainer() {
@@ -45,10 +36,6 @@ export default class FilmBoard {
 
   getShowMoreButton() {
     return this.getElement().querySelector(`.films-list__show-more`);
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

@@ -1,4 +1,4 @@
-import {createElement} from "../lib/util.js";
+import AbstractView from "./abstract.js";
 import FilmView from "./film.js";
 
 const createExtraFilmListTemplate = (heading, films) => {
@@ -14,27 +14,15 @@ const createExtraFilmListTemplate = (heading, films) => {
   );
 };
 
-export default class FilmBoardSpecial {
+export default class FilmBoardSpecial extends AbstractView {
   constructor(heading, films) {
+    super();
     this._heading = heading;
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return createExtraFilmListTemplate(this._heading, this._films);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

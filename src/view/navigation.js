@@ -1,4 +1,4 @@
-import {createElement} from "../lib/util.js";
+import AbstractView from "./abstract.js";
 
 const createNavigationTemplate = (navigation) => {
   return (
@@ -20,26 +20,14 @@ const createNavigationTemplate = (navigation) => {
   );
 };
 
-export default class Navigation {
+export default class Navigation extends AbstractView {
   constructor(navigation) {
-    this._element = null;
+    super();
     this._navigation = navigation;
   }
 
   getTemplate() {
     return createNavigationTemplate(this._navigation);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 
