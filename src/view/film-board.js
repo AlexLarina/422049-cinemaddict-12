@@ -1,9 +1,6 @@
 import AbstractView from "./abstract.js";
-import FilmBoardSpecialView from "./film-board-special.js";
 
-const EXTRA_FILM_CARDS_AMOUNT = 2;
-
-const createFilmSectionTemplate = (films) => {
+const createFilmSectionTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -14,20 +11,24 @@ const createFilmSectionTemplate = (films) => {
         </div>
         <button class="films-list__show-more">Show more</button>
       </section>
-      ${new FilmBoardSpecialView(`Top rated`, films.slice(0, EXTRA_FILM_CARDS_AMOUNT)).getTemplate()}
-      ${new FilmBoardSpecialView(`Most commented`, films.slice(0, EXTRA_FILM_CARDS_AMOUNT)).getTemplate()}
     `
   );
 };
 
 export default class FilmBoard extends AbstractView {
-  constructor(films) {
+  constructor() {
     super();
-    this._films = films;
+
+    this._clickHandler = this._clickHandler.bind(this);
+  }
+
+  _clickHandler(evt) {
+    evt.preventDefault();
+    this._callback.click();
   }
 
   getTemplate() {
-    return createFilmSectionTemplate(this._films);
+    return createFilmSectionTemplate();
   }
 
   getContainer() {
@@ -36,6 +37,14 @@ export default class FilmBoard extends AbstractView {
 
   getShowMoreButton() {
     return this.getElement().querySelector(`.films-list__show-more`);
+  }
+
+  setShowMoreClickHandler(callback) {
+    this._callback.click = callback;
+
+    this.getElement()
+      .querySelector(`.films-list__show-more`)
+      .addEventListener(`click`, this._clickHandler);
   }
 }
 
