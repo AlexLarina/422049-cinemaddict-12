@@ -1,8 +1,9 @@
+import {updateItem} from "../lib/util.js";
 import {render} from "../lib/render.js";
 
 import FilmBoardView from "../view/film-board.js";
-import FilmView from "../view/film.js";
-import FilmPopupView from "../view/film-popup.js";
+
+import FilmPresenter from "../presenter/film.js";
 
 const FILM_CARDS_AMOUNT = 8;
 const MAX_CARDS_SHOWN_PER_STEP = 5;
@@ -11,7 +12,12 @@ export default class FilmList {
   constructor(filmListContainer) {
     this._filmListContainer = filmListContainer;
 
+    this._filmPresenter = {};
+
     this._filmBoardComponent = new FilmBoardView();
+
+    this._handleFilmChange = this._handleFilmChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
   }
 
   init(filmItems) {
@@ -23,46 +29,35 @@ export default class FilmList {
   }
 
   _renderFilm(filmItem) {
-    const filmComponent = new FilmView(filmItem);
-    const filmPopupComponent = new FilmPopupView(filmItem);
+    const filmPresenter = new FilmPresenter(
+        this._filmBoardComponent.getContainer(),
+        this._filmListContainer,
+        this._handleFilmChange,
+        this._handleModeChange
+    );
 
-    filmPopupComponent.setClosePopupClickHandler(() => {
-      this._filmListContainer.removeChild(filmPopupComponent.getElement());
-    });
-
-    filmComponent.setOpenPopupClickHandler(() => {
-      render(this._filmListContainer, filmPopupComponent);
-    });
-
-    return filmComponent.getElement();
-  }
-
-  _renderFilmPopup() {
-
-  }
-
-  _createFilmsFragment(filmsData) {
-    const fragment = new DocumentFragment();
-
-    filmsData.forEach((filmDataItem) => {
-      fragment.appendChild(this._renderFilm(filmDataItem));
-    });
-
-    return fragment;
+    filmPresenter.init(filmItem);
+    this._filmPresenter[filmItem.id] = filmPresenter;
   }
 
   _renderFilms(from, to) {
-    return this._createFilmsFragment(
-        this._filmItems
-        .slice(from, to)
-    );
+    this._filmItems
+      .slice(from, to)
+      .forEach((filmItem) =>
+        this._renderFilm(filmItem)
+      );
+  }
+
+  _clearFilmList() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((filmPresenter) => filmPresenter.destroy());
+
+    this._filmPresenter = {};
   }
 
   _renderFilmBoard() {
-    render(
-        this._filmBoardComponent.getContainer(),
-        this._renderFilms(0, MAX_CARDS_SHOWN_PER_STEP)
-    );
+    this._renderFilms(0, MAX_CARDS_SHOWN_PER_STEP);
 
     if (this._filmItems.length > MAX_CARDS_SHOWN_PER_STEP) {
       this._renderLoadMoreButton(this._filmItems);
@@ -76,12 +71,9 @@ export default class FilmList {
       0 : MAX_CARDS_SHOWN_PER_STEP;
 
     this._filmBoardComponent.setShowMoreClickHandler(() => {
-      render(
-          this._filmBoardComponent.getContainer(),
-          this._renderFilms(
-              renderedFilmCount,
-              renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP
-          )
+      this._renderFilms(
+          renderedFilmCount,
+          renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP
       );
 
       renderedFilmCount += MAX_CARDS_SHOWN_PER_STEP;
@@ -94,5 +86,16 @@ export default class FilmList {
 
   _hideShowMoreButton(button) {
     button.setAttribute(`style`, `display: none;`);
+  }
+
+  _handleFilmChange(updatedFilm) {
+    this._filmItems = updateItem(this._filmItems, updatedFilm);
+    this._filmPresenter[updatedFilm.id].init(updatedFilm);
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.resetView());
   }
 }

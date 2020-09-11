@@ -1,6 +1,10 @@
 import AbstractView from "./abstract.js";
+import FilmBoardSpecialView from "./film-board-special.js";
+
+const HEADINGS = [`Top rated`, `Most commented`];
 
 const createFilmSectionTemplate = () => {
+  const [rated, commented] = HEADINGS;
   return (
     `<section class="films">
       <section class="films-list">
@@ -11,6 +15,9 @@ const createFilmSectionTemplate = () => {
         </div>
         <button class="films-list__show-more">Show more</button>
       </section>
+      ${new FilmBoardSpecialView(rated).getTemplate()}
+      ${new FilmBoardSpecialView(commented).getTemplate()}
+    </section>
     `
   );
 };

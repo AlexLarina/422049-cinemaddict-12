@@ -33,9 +33,12 @@ const createReleaseDate = () => {
   `);
 };
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const generateFilmMockData = () => {
   const originalFilm = getRandomArrayElement(Object.keys(TITLES));
   return {
+    id: generateId(),
     poster: getRandomArrayElement(POSTER_TITLES),
     title: TITLES[originalFilm],
     originalTitle: originalFilm,
@@ -53,7 +56,10 @@ const generateFilmMockData = () => {
     description: createDescription(DESCRIPTION_TEMPLATE),
     ageRating: `18`,
     comments: createCommentsDataArray(COMMENTS_POPUP_AMOUNT),
-    year: createRandomNumber(RELEASE_YEARS.START, RELEASE_YEARS.END)
+    year: createRandomNumber(RELEASE_YEARS.START, RELEASE_YEARS.END),
+    toWatchList: false,
+    isWatched: false,
+    isFavourite: false,
   };
 };
 

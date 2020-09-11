@@ -10,7 +10,7 @@ import FilmListPresenter from "./presenter/film-list.js";
 import creatFilmDataArray from "./mocks/films.js";
 import createNavigation from "./mocks/navigation.js";
 
-const FILM_CARDS_AMOUNT = 8;
+const FILM_CARDS_AMOUNT = 25;
 
 const mainHeaderElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);

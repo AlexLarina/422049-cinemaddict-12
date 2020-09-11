@@ -1,22 +1,24 @@
 import AbstractView from "./abstract.js";
 
 const createFilmCardTemplate = (film) => {
+  const {title, rating, year, duration, genres, poster, description, comments, toWatchList, isWatched, isFavourite} = film;
+
   return (
     `<article class="film-card">
-      <h3 class="film-card__title">${film.title}</h3>
-      <p class="film-card__rating">${film.rating}</p>
+      <h3 class="film-card__title">${title}</h3>
+      <p class="film-card__rating">${rating}</p>
       <p class="film-card__info">
-        <span class="film-card__year">${film.year}</span>
-        <span class="film-card__duration">${film.duration}</span>
-        <span class="film-card__genre">${film.genre}</span>
+        <span class="film-card__year">${year}</span>
+        <span class="film-card__duration">${duration}</span>
+        <span class="film-card__genre">${genres.join(`, `)}</span>
       </p>
-      <img src="./images/posters/${film.poster}" alt="${film.poster.split(`.`)[0]}" class="film-card__poster">
-      <p class="film-card__description">${film.description}</p>
-      <a class="film-card__comments">${film.comments.length} comments</a>
+      <img src="./images/posters/${poster}" alt="${poster.split(`.`)[0]}" class="film-card__poster">
+      <p class="film-card__description">${description}</p>
+      <a class="film-card__comments">${comments.length} comments</a>
       <form class="film-card__controls">
-        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-        <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
+        <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${toWatchList ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
+        <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${isWatched ? `film-card__controls-item--active` : ``} ">Mark as watched</button>
+        <button class="film-card__controls-item button film-card__controls-item--favorite ${isFavourite ? `film-card__controls-item--active` : ``}">Mark as favorite</button>
       </form>
     </article>`
   );
@@ -28,11 +30,29 @@ export default class Film extends AbstractView {
     this._film = film;
 
     this._clickHandler = this._clickHandler.bind(this);
+    this._favouriteClickHandler = this._favouriteClickHandler.bind(this);
+    this._addToWatchListClickHandler = this._addToWatchListClickHandler.bind(this);
+    this._watchedClickClickHandler = this._watchedClickClickHandler.bind(this);
   }
 
   _clickHandler(evt) {
     evt.preventDefault();
     this._callback.click();
+  }
+
+  _favouriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favouriteClick();
+  }
+
+  _addToWatchListClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.toWatchListClick();
+  }
+
+  _watchedClickClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchedClick();
   }
 
   getTemplate() {
@@ -53,6 +73,30 @@ export default class Film extends AbstractView {
     this.getElement()
       .querySelector(`.film-card__comments`)
       .addEventListener(`click`, this._clickHandler);
+  }
+
+  setFavouriteClickHandler(callback) {
+    this._callback.favouriteClick = callback;
+
+    this.getElement()
+      .querySelector(`.film-card__controls-item--favorite`)
+      .addEventListener(`click`, this._favouriteClickHandler);
+  }
+
+  setAddToWatchListClickHandler(callback) {
+    this._callback.toWatchListClick = callback;
+
+    this.getElement()
+      .querySelector(`.film-card__controls-item--add-to-watchlist`)
+      .addEventListener(`click`, this._addToWatchListClickHandler);
+  }
+
+  setWatchedClickHandler(callback) {
+    this._callback.watchedClick = callback;
+
+    this.getElement()
+      .querySelector(`.film-card__controls-item--mark-as-watched`)
+      .addEventListener(`click`, this._watchedClickClickHandler);
   }
 
 }
