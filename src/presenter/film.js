@@ -42,13 +42,8 @@ export default class Film {
     const previousFilmComponent = this._filmComponent;
     const previousPopupComponent = this._filmPopupComponent;
 
-    this._filmComponent = new FilmView(film);
+    this._filmComponent = this._createFilmComponent();
     this._filmPopupComponent = new FilmPopupView(film);
-
-    this._filmComponent.setOpenPopupClickHandler(this._handleOpenPopupClick);
-    this._filmComponent.setFavouriteClickHandler(this._handleFavouriteClick);
-    this._filmComponent.setAddToWatchListClickHandler(this._handleAddToWatchListClick);
-    this._filmComponent.setWatchedClickHandler(this._handleWatchedClick);
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
     this._filmPopupComponent.setDetailsChangeHandler(this._handleDetailsChange);
@@ -60,19 +55,20 @@ export default class Film {
       return;
     }
 
-    // if (this._filmListContainer instanceof Abstract) {
-    //   this._filmListContainer = this._filmListContainer.getElement();
-    // }
+    // replace(this._filmComponent, previousFilmComponent);
 
-    if (this._mode === Mode.DEFAULT) {
-      replace(this._filmComponent, previousFilmComponent);
-    }
+    // if (this._mode === Mode.DEFAULT) {
+    //   replace(this._filmComponent, previousFilmComponent);
+    // }
 
     if (this._mode === Mode.POPUP) {
       replace(this._filmPopupComponent, previousPopupComponent);
     }
 
-    remove(previousFilmComponent);
+    if (this._mode !== Mode.POPUP) {
+      remove(previousFilmComponent);
+    }
+
     remove(previousPopupComponent);
   }
 
@@ -87,6 +83,16 @@ export default class Film {
     }
   }
 
+  _createFilmComponent() {
+    const filmComponent = new FilmView(this._film);
+    filmComponent.setOpenPopupClickHandler(this._handleOpenPopupClick);
+    filmComponent.setFavouriteClickHandler(this._handleFavouriteClick);
+    filmComponent.setAddToWatchListClickHandler(this._handleAddToWatchListClick);
+    filmComponent.setWatchedClickHandler(this._handleWatchedClick);
+
+    return filmComponent;
+  }
+
   _showPopup() {
     render(this._filmPopupContainer, this._filmPopupComponent);
     this._changeMode();
@@ -94,8 +100,16 @@ export default class Film {
   }
 
   _hidePopup() {
-    this._filmPopupContainer.removeChild(this._filmPopupComponent.getElement());
+    this._filmPopupComponent.getElement().remove();
+
+    const previousFilmComponent = this._filmComponent;
+    this._filmComponent = this._createFilmComponent();
+    replace(this._filmComponent, previousFilmComponent);
+
+    //render(this._filmListContainer, this._filmComponent);
+    //this._filmPopupContainer.removeChild(this._filmPopupComponent.getElement());
     this._mode = Mode.DEFAULT;
+
   }
 
   _handleOpenPopupClick() {
@@ -163,7 +177,10 @@ export default class Film {
   }
 
   _handlePopupSubmit(film) {
+    // когда _hidePopup вызывается ДО changeData все работает правильно, но я не понимаю почему ?!
+    // this._hidePopup();
+
     this._changeData(film);
-    this._hidePopup();
+    //this._hidePopup();
   }
 }
