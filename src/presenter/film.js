@@ -40,9 +40,13 @@ export default class Film {
     this._film = film;
 
     const previousFilmComponent = this._filmComponent;
-    const previousPopupComponent = this._filmPopupComponent;
 
-    this._filmComponent = this._createFilmComponent();
+    if (this._mode !== Mode.POPUP) {
+      this._filmComponent = this._createFilmComponent();
+    }
+    // this._filmComponent = this._createFilmComponent();
+
+    const previousPopupComponent = this._filmPopupComponent;
     this._filmPopupComponent = new FilmPopupView(film);
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
@@ -57,9 +61,9 @@ export default class Film {
 
     // replace(this._filmComponent, previousFilmComponent);
 
-    // if (this._mode === Mode.DEFAULT) {
-    //   replace(this._filmComponent, previousFilmComponent);
-    // }
+    if (this._mode === Mode.DEFAULT) {
+      replace(this._filmComponent, previousFilmComponent);
+    }
 
     if (this._mode === Mode.POPUP) {
       replace(this._filmPopupComponent, previousPopupComponent);
@@ -106,8 +110,6 @@ export default class Film {
     this._filmComponent = this._createFilmComponent();
     replace(this._filmComponent, previousFilmComponent);
 
-    //render(this._filmListContainer, this._filmComponent);
-    //this._filmPopupContainer.removeChild(this._filmPopupComponent.getElement());
     this._mode = Mode.DEFAULT;
 
   }
@@ -177,10 +179,6 @@ export default class Film {
   }
 
   _handlePopupSubmit(film) {
-    // когда _hidePopup вызывается ДО changeData все работает правильно, но я не понимаю почему ?!
-    // this._hidePopup();
-
     this._changeData(film);
-    //this._hidePopup();
   }
 }

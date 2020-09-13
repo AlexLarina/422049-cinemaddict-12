@@ -2,7 +2,6 @@ import SmartView from "./smart.js";
 import createCommentsTemplate from "./comments.js";
 import {capitalize} from "../lib/util.js";
 
-import {createRandomNumber} from "../lib/random.js";
 import {createElement, render} from "../lib/render.js";
 
 const createFilmPopupTemplate = (film) => {
@@ -104,9 +103,6 @@ export default class FilmPopup extends SmartView {
     this._newCommentInputHandler = this._newCommentInputHandler.bind(this);
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
 
-    // example to delete later
-    this._randomHandler = this._randomHandler.bind(this);
-
     this._setInnerHandlers();
   }
 
@@ -118,11 +114,6 @@ export default class FilmPopup extends SmartView {
   _detailsChangeHandler(evt) {
     evt.preventDefault();
     const detailInputID = (evt.target.tagName.toLowerCase() === `input`) ? evt.target.id : null;
-
-    // this.updateData({
-    //   [DETAILS[detailInputID]]: !this._film[DETAILS[detailInputID]]
-    // });
-
     this._callback.detailsChange(detailInputID);
   }
 
@@ -161,27 +152,15 @@ export default class FilmPopup extends SmartView {
     return newComment;
   }
 
-  // example to delete later
-  _randomHandler(evt) {
-    evt.preventDefault();
-    this.updateData({
-      rating: createRandomNumber()
-    });
-  }
-
   _setInnerHandlers() {
     this.getElement()
       .querySelector(`.film-details__comment-input`)
       .addEventListener(`input`, this._newCommentInputHandler);
-
-    // example to delete later
-    this.getElement()
-      .querySelector(`.film-details__total-rating`)
-      .addEventListener(`click`, this._randomHandler);
   }
 
   _formSubmitHandler(evt) {
-    if (evt.ctrlKey && evt.key === `Enter`) {
+    if (evt.ctrlKey && evt.key === `Enter` ||
+        evt.metaKey && evt.key === `Enter`) {
       const newComment = this._newCommentInputHandler(evt);
       let updatedComments = this._film.comments;
       updatedComments.push(newComment);
