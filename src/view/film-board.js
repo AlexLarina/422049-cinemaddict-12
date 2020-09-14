@@ -13,6 +13,7 @@ const createFilmSectionTemplate = () => {
         <div class="films-list__container">
 
         </div>
+
         <button class="films-list__show-more">Show more</button>
       </section>
       ${new FilmBoardSpecialView(rated).getTemplate()}

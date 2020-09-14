@@ -1,8 +1,3 @@
-import {
-  getRandomArrayElement,
-  createRandomNumber
-} from "../lib/random.js";
-
 import {capitalize} from "../lib/util.js";
 
 const NAVIGATION = [`all`, `watchlist`, `history`, `favorites`];
@@ -21,10 +16,10 @@ const createNavigation = () => {
     name,
     isSelected: false,
     description: createDescription(name),
-    amount: createRandomNumber()
+    amount: 0
   }));
 
-  getRandomArrayElement(navigation).isSelected = true;
+  navigation[0].isSelected = true;
 
   return navigation;
 };

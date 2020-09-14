@@ -30,10 +30,10 @@ export default class Film {
     this._handlePopupSubmit = this._handlePopupSubmit.bind(this);
     this._handleDetailsChange = this._handleDetailsChange.bind(this);
 
-
     this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
     this._handleAddToWatchListClick = this._handleAddToWatchListClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
   init(film) {
@@ -44,7 +44,6 @@ export default class Film {
     if (this._mode !== Mode.POPUP) {
       this._filmComponent = this._createFilmComponent();
     }
-    // this._filmComponent = this._createFilmComponent();
 
     const previousPopupComponent = this._filmPopupComponent;
     this._filmPopupComponent = new FilmPopupView(film);
@@ -58,8 +57,6 @@ export default class Film {
       render(this._filmListContainer, this._filmComponent);
       return;
     }
-
-    // replace(this._filmComponent, previousFilmComponent);
 
     if (this._mode === Mode.DEFAULT) {
       replace(this._filmComponent, previousFilmComponent);
@@ -99,6 +96,7 @@ export default class Film {
 
   _showPopup() {
     render(this._filmPopupContainer, this._filmPopupComponent);
+    document.addEventListener(`keydown`, this._escKeyDownHandler);
     this._changeMode();
     this._mode = Mode.POPUP;
   }
@@ -110,8 +108,15 @@ export default class Film {
     this._filmComponent = this._createFilmComponent();
     replace(this._filmComponent, previousFilmComponent);
 
+    document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
+  }
 
+  _escKeyDownHandler(evt) {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      this._hidePopup();
+    }
   }
 
   _handleOpenPopupClick() {
