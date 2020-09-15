@@ -1,15 +1,11 @@
 import {updateItem} from "../lib/util.js";
 import {render} from "../lib/render.js";
-import {FilterType} from "../lib/const.js";
+import {FilterType, MAX_CARDS_SHOWN_PER_STEP} from "../lib/const.js";
 import {sortByDate, sortByRating} from "../lib/sort.js";
 
 import FilmBoardView from "../view/film-board.js";
 
 import FilmPresenter from "../presenter/film.js";
-
-
-const FILM_CARDS_AMOUNT = 8;
-const MAX_CARDS_SHOWN_PER_STEP = 5;
 
 export default class FilmList {
   constructor(filmListContainer, filterComponent) {
@@ -24,8 +20,7 @@ export default class FilmList {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleFilterClick = this._handleFilterClick.bind(this);
 
-    this._renderedFilmCount = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ?
-      0 : MAX_CARDS_SHOWN_PER_STEP;
+    this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
   }
 
   init(filmItems) {
@@ -48,8 +43,6 @@ export default class FilmList {
       default:
         this._filmItems = this._initialFilmListItems;
     }
-
-    console.log(this._filmItems);
   }
 
   _renderFilm(filmItem) {
@@ -79,13 +72,12 @@ export default class FilmList {
 
     this._filmPresenter = {};
 
-    this._renderedFilmCount = (FILM_CARDS_AMOUNT < MAX_CARDS_SHOWN_PER_STEP) ?
-      0 : MAX_CARDS_SHOWN_PER_STEP;
+    this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
 
     if (this._filmItems.length > MAX_CARDS_SHOWN_PER_STEP) {
       this._displayShowMoreButton(this._filmBoardComponent.getShowMoreButton());
     }
-    console.log(this._renderedFilmCount);
+
   }
 
   _handleFilterClick(filter) {
@@ -99,7 +91,7 @@ export default class FilmList {
     this._renderFilms(0, MAX_CARDS_SHOWN_PER_STEP);
 
     if (this._filmItems.length > MAX_CARDS_SHOWN_PER_STEP) {
-      this._renderLoadMoreButton(this._filmItems);
+      this._handleLoadMoreButtonClick(this._filmItems);
     } else {
       this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
     }
@@ -107,7 +99,7 @@ export default class FilmList {
     this._filterComponent.setFilterClickHandler(this._handleFilterClick);
   }
 
-  _renderLoadMoreButton() {
+  _handleLoadMoreButtonClick() {
     this._filmBoardComponent.setShowMoreClickHandler(() => {
       this._renderFilms(
           this._renderedFilmCount,
