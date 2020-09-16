@@ -1,6 +1,6 @@
 import {updateItem} from "../lib/util.js";
 import {render} from "../lib/render.js";
-import {FilterType, MAX_CARDS_SHOWN_PER_STEP} from "../lib/const.js";
+import {SortType, MAX_CARDS_SHOWN_PER_STEP} from "../lib/const.js";
 import {sortByDate, sortByRating} from "../lib/sort.js";
 
 import FilmBoardView from "../view/film-board.js";
@@ -8,17 +8,17 @@ import FilmBoardView from "../view/film-board.js";
 import FilmPresenter from "../presenter/film.js";
 
 export default class FilmList {
-  constructor(filmListContainer, filterComponent) {
+  constructor(filmListContainer, sortComponent) {
     this._filmListContainer = filmListContainer;
 
     this._filmPresenter = {};
 
     this._filmBoardComponent = new FilmBoardView();
-    this._filterComponent = filterComponent;
+    this._sortComponent = sortComponent;
 
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
-    this._handleFilterClick = this._handleFilterClick.bind(this);
+    this._handleSortTypeClick = this._handleSortTypeClick.bind(this);
 
     this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
   }
@@ -32,12 +32,13 @@ export default class FilmList {
     this._renderFilmBoard(this._filmItems);
   }
 
-  _filterFilms(filter) {
+  _sortFilms(filter) {
+    // @TO-DO слепить чистую функцию, навести красоту
     switch (filter) {
-      case FilterType.DATE:
+      case SortType.DATE:
         this._filmItems.sort(sortByDate);
         break;
-      case FilterType.RATING:
+      case SortType.RATING:
         this._filmItems.sort(sortByRating);
         break;
       default:
@@ -80,8 +81,8 @@ export default class FilmList {
 
   }
 
-  _handleFilterClick(filter) {
-    this._filterFilms(filter);
+  _handleSortTypeClick(sortType) {
+    this._sortFilms(sortType);
 
     this._clearFilmList();
     this._renderFilmBoard();
@@ -96,7 +97,7 @@ export default class FilmList {
       this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
     }
 
-    this._filterComponent.setFilterClickHandler(this._handleFilterClick);
+    this._sortComponent.setSortTypeClickHandler(this._handleSortTypeClick);
   }
 
   _handleLoadMoreButtonClick() {

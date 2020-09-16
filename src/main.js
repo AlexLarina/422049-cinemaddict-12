@@ -3,7 +3,7 @@ import {render} from "./lib/render.js";
 
 import ProfileView from "./view/profile.js";
 import NavigationView from "./view/navigation.js";
-import FiltersView from "./view/filters.js";
+import SortView from "./view/sort.js";
 import EmptyView from "./view/empty.js";
 import StatsView from "./view/stats.js";
 
@@ -21,14 +21,14 @@ const mainFooterElement = document.querySelector(`.footer`);
 const navigation = createNavigation();
 const filmData = creatFilmDataArray(FILM_CARDS_AMOUNT);
 
-const filterComponent = new FiltersView();
+const sortComponent = new SortView();
 
 render(mainHeaderElement, new ProfileView());
 render(mainElement, new NavigationView(navigation));
-render(mainElement, filterComponent);
+render(mainElement, sortComponent);
 
 if (FILM_CARDS_AMOUNT !== 0) {
-  const filmListPresenter = new FilmListPresenter(mainElement, filterComponent);
+  const filmListPresenter = new FilmListPresenter(mainElement, sortComponent);
   filmListPresenter.init(filmData);
 } else {
   render(mainElement, new EmptyView());
