@@ -1,6 +1,5 @@
 import {render} from "./lib/render.js";
 
-
 import ProfileView from "./view/profile.js";
 import NavigationView from "./view/navigation.js";
 import SortView from "./view/sort.js";
@@ -35,3 +34,4 @@ if (FILM_CARDS_AMOUNT !== 0) {
 }
 
 render(mainFooterElement, new StatsView());
+
