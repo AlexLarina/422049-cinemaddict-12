@@ -2,7 +2,7 @@
 import SmartView from "./smart.js";
 import createCommentsTemplate from "./comments.js";
 
-import {formatReleaseDate} from "../lib/date.js";
+import {formatReleaseDate, formatDuration} from "../lib/date.js";
 import {capitalize} from "../lib/util.js";
 import {createElement, render} from "../lib/render.js";
 
@@ -52,7 +52,7 @@ const createFilmPopupTemplate = (film) => {
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Runtime</td>
-                  <td class="film-details__cell">${film.duration}</td>
+                  <td class="film-details__cell">${formatDuration(film.duration)}</td>
                 </tr>
                 <tr class="film-details__row">
                   <td class="film-details__term">Country</td>
