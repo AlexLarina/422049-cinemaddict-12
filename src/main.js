@@ -8,6 +8,8 @@ import StatsView from "./view/stats.js";
 
 import FilmListPresenter from "./presenter/film-list.js";
 
+import FilmsModel from "./model/films.js";
+
 import creatFilmDataArray from "./mocks/films.js";
 import createNavigation from "./mocks/navigation.js";
 
@@ -20,15 +22,18 @@ const mainFooterElement = document.querySelector(`.footer`);
 const navigation = createNavigation();
 const filmData = creatFilmDataArray(FILM_CARDS_AMOUNT);
 
+const filmsModel = new FilmsModel();
+filmsModel.setFilms(filmData);
+
 const sortComponent = new SortView();
 
 render(mainHeaderElement, new ProfileView());
 render(mainElement, new NavigationView(navigation));
 render(mainElement, sortComponent);
 
-if (FILM_CARDS_AMOUNT !== 0) {
-  const filmListPresenter = new FilmListPresenter(mainElement, sortComponent);
-  filmListPresenter.init(filmData);
+if (filmsModel.getFilms().length !== 0) {
+  const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel);
+  filmListPresenter.init();
 } else {
   render(mainElement, new EmptyView());
 }

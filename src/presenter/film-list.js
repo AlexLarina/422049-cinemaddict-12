@@ -1,4 +1,3 @@
-import {updateItem} from "../lib/util.js";
 import {render} from "../lib/render.js";
 import {SortType, MAX_CARDS_SHOWN_PER_STEP} from "../lib/const.js";
 import {sortByDate, sortByRating} from "../lib/sort.js";
@@ -8,7 +7,8 @@ import FilmBoardView from "../view/film-board.js";
 import FilmPresenter from "../presenter/film.js";
 
 export default class FilmList {
-  constructor(filmListContainer, sortComponent) {
+  constructor(filmListContainer, sortComponent, filmsModel) {
+    this._filmsModel = filmsModel;
     this._filmListContainer = filmListContainer;
 
     this._filmPresenter = {};
@@ -23,27 +23,24 @@ export default class FilmList {
     this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
   }
 
-  init(filmItems) {
-    this._filmItems = filmItems.slice();
-    this._initialFilmListItems = filmItems.slice();
+  init() {
+    // this._filmItems = filmItems.slice();
+    // this._initialFilmListItems = filmItems.slice();
 
     render(this._filmListContainer, this._filmBoardComponent);
 
     this._renderFilmBoard(this._filmItems);
   }
 
-  _sortFilms(filter) {
-    // @TO-DO слепить чистую функцию, навести красоту
-    switch (filter) {
+  _getFilms() {
+    switch (this._currentSortType) {
       case SortType.DATE:
-        this._filmItems.sort(sortByDate);
-        break;
+        return this._filmsModel.getFilms().slice().sort(sortByDate);
       case SortType.RATING:
-        this._filmItems.sort(sortByRating);
-        break;
-      default:
-        this._filmItems = this._initialFilmListItems;
+        return this._filmsModel.getFilms().slice().sort(sortByRating);
     }
+
+    return this._filmsModel.getFilms();
   }
 
   _renderFilm(filmItem) {
@@ -58,12 +55,8 @@ export default class FilmList {
     this._filmPresenter[filmItem.id] = filmPresenter;
   }
 
-  _renderFilms(from, to) {
-    this._filmItems
-      .slice(from, to)
-      .forEach((filmItem) =>
-        this._renderFilm(filmItem)
-      );
+  _renderFilms(films) {
+    films.forEach((filmItem) => this._renderFilm(filmItem));
   }
 
   _clearFilmList() {
@@ -82,16 +75,23 @@ export default class FilmList {
   }
 
   _handleSortTypeClick(sortType) {
-    this._sortFilms(sortType);
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._currentSortType = sortType;
 
     this._clearFilmList();
     this._renderFilmBoard();
   }
 
   _renderFilmBoard() {
-    this._renderFilms(0, MAX_CARDS_SHOWN_PER_STEP);
+    const filmCount = this._getFilms().length;
+    const films = this._getFilms().slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP));
 
-    if (this._filmItems.length > MAX_CARDS_SHOWN_PER_STEP) {
+    this._renderFilms(films);
+
+    if (filmCount > MAX_CARDS_SHOWN_PER_STEP) {
       this._handleLoadMoreButtonClick(this._filmItems);
     } else {
       this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
@@ -101,15 +101,20 @@ export default class FilmList {
   }
 
   _handleLoadMoreButtonClick() {
+    const filmCount = this._getFilms().length;
+    const newRenderedFilmCount = Math.min(
+        filmCount,
+        this._renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP
+    );
+
+    const films = this._getFilms().slice(this._renderedFilmCount, newRenderedFilmCount);
+
     this._filmBoardComponent.setShowMoreClickHandler(() => {
-      this._renderFilms(
-          this._renderedFilmCount,
-          this._renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP
-      );
+      this._renderFilms(films);
 
-      this._renderedFilmCount += MAX_CARDS_SHOWN_PER_STEP;
+      this._renderedFilmCount = newRenderedFilmCount;
 
-      if (this._renderedFilmCount > this._filmItems.length) {
+      if (this._renderedFilmCount >= filmCount) {
         this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
       }
     });
@@ -124,7 +129,8 @@ export default class FilmList {
   }
 
   _handleFilmChange(updatedFilm) {
-    this._filmItems = updateItem(this._filmItems, updatedFilm);
+    // waiting for model update
+    // про обновление отсортированных карточек не забыть
     this._filmPresenter[updatedFilm.id].init(updatedFilm);
   }
 
