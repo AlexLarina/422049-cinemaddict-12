@@ -44,9 +44,9 @@ const generateFilmMockData = () => {
     description: createDescription(DESCRIPTION_TEMPLATE),
     ageRating: `18`,
     comments: createCommentsDataArray(COMMENTS_POPUP_AMOUNT),
-    toWatchList: false,
-    isWatched: false,
-    isFavourite: false,
+    toWatchList: getRandomArrayElement([false, true]),
+    isWatched: getRandomArrayElement([false, true]),
+    isFavourite: getRandomArrayElement([false, true]),
   };
 };
 
