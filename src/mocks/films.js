@@ -16,12 +16,11 @@ import {
 } from "./film-data.js";
 
 import createCommentsDataArray from "./comments.js";
+import {generateId} from "../lib/util.js";
 
 const COMMENTS_POPUP_AMOUNT = 4;
 
 const TEST_RELEASE_DATE = `2019-05-11T00:00:00.000Z`;
-
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateFilmMockData = () => {
   const originalFilm = getRandomArrayElement(Object.keys(TITLES));

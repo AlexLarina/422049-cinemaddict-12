@@ -1,9 +1,7 @@
 import SmartView from "./smart.js";
-import createCommentsTemplate from "./comments.js";
 
 import {formatReleaseDate, formatDuration} from "../lib/date.js";
 import {capitalize} from "../lib/util.js";
-import {createElement, render} from "../lib/render.js";
 
 const createFilmPopupTemplate = (film) => {
   return (
@@ -86,7 +84,7 @@ const createFilmPopupTemplate = (film) => {
         </div>
 
         <div class="form-details__bottom-container">
-          ${createCommentsTemplate(film.comments)}
+
         </div>
       </form>
     </section>`
@@ -100,11 +98,6 @@ export default class FilmPopup extends SmartView {
 
     this._clickHandler = this._clickHandler.bind(this);
     this._detailsChangeHandler = this._detailsChangeHandler.bind(this);
-    this._emojiClickHandler = this._emojiClickHandler.bind(this);
-    this._newCommentInputHandler = this._newCommentInputHandler.bind(this);
-    this._formSubmitHandler = this._formSubmitHandler.bind(this);
-
-    this._setInnerHandlers();
   }
 
   _clickHandler(evt) {
@@ -118,65 +111,7 @@ export default class FilmPopup extends SmartView {
     this._callback.detailsChange(detailInputID);
   }
 
-  _emojiClickHandler(evt) {
-    evt.preventDefault();
-
-    // @ TO-DO refactor
-    if (evt.target.tagName.toLowerCase() === `img`) {
-      const emojiName = evt.target.src.split(`/`).pop().split(`.`)[0];
-      const createEmojiTemplate = (emoji) => `<img src="./images/emoji/${emoji}.png" width="55" height="55" alt="emoji-${emoji}">`;
-      const emojiElement = createElement(createEmojiTemplate(emojiName));
-      const emojiContainerElement = this.getElement().querySelector(`.film-details__add-emoji-label`);
-      render(emojiContainerElement, emojiElement);
-    }
-
-    this._callback.emojiClick();
-  }
-
-  _newCommentInputHandler(evt) {
-    evt.preventDefault();
-
-    const emojiElement = this.getElement().querySelector(`.film-details__add-emoji-label img`);
-    let emojiChosen = ``;
-
-    if (emojiElement) {
-      emojiChosen = emojiElement.alt.split(`-`)[1];
-    }
-
-    const newComment = {
-      emoji: emojiChosen,
-      date: `Now`,
-      author: `Anonim`,
-      message: evt.target.value
-    };
-
-    return newComment;
-  }
-
-  _setInnerHandlers() {
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`input`, this._newCommentInputHandler);
-  }
-
-  _formSubmitHandler(evt) {
-    if (evt.ctrlKey && evt.key === `Enter` ||
-        evt.metaKey && evt.key === `Enter`) {
-      const newComment = this._newCommentInputHandler(evt);
-      let updatedComments = this._film.comments;
-      updatedComments.push(newComment);
-
-      this.updateData({
-        comments: updatedComments
-      });
-
-      this._callback.formSubmit(this._film);
-    }
-  }
-
   restoreHandlers() {
-    this._setInnerHandlers();
-
     this.setClosePopupClickHandler(this._callback.click);
     this.setDetailsChangeHandler(this._callback.detailsChange);
     this.setEmojiClickHandler(this._callback.emojiClick);
@@ -202,20 +137,8 @@ export default class FilmPopup extends SmartView {
       .addEventListener(`change`, this._detailsChangeHandler);
   }
 
-  setEmojiClickHandler(callback) {
-    this._callback.emojiClick = callback;
-
-    this.getElement()
-      .querySelector(`.film-details__emoji-list`)
-      .addEventListener(`click`, this._emojiClickHandler);
-  }
-
-  setFormSubmitHandler(callback) {
-    this._callback.formSubmit = callback;
-
-    this.getElement()
-      .querySelector(`.film-details__comment-input`)
-      .addEventListener(`keydown`, this._formSubmitHandler);
+  getCommentsContainer() {
+    return this.getElement().querySelector(`.form-details__bottom-container`);
   }
 }
 

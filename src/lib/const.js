@@ -11,4 +11,9 @@ export const FilterType = {
   FAVOURITES: `favorites`
 };
 
+export const CommentAction = {
+  ADD: `add`,
+  DELETE: `delete`
+};
+
 export const MAX_CARDS_SHOWN_PER_STEP = 5;

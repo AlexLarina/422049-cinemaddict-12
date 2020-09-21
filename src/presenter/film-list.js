@@ -31,7 +31,7 @@ export default class FilmList {
   }
 
   init() {
-    this._renderFilmBoard(this._filmItems);
+    this._renderFilmBoard();
   }
 
   _getFilms() {
@@ -88,7 +88,12 @@ export default class FilmList {
 
   }
 
-  _handleViewAction(update) {
+  _handleViewAction(update, updateComment) {
+    if (updateComment) {
+      this._filmsModel.updateComment(update, updateComment);
+      return;
+    }
+
     this._filmsModel.updateFilm(update);
   }
 

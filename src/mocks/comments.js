@@ -5,10 +5,12 @@ import {
 } from "./comment-data.js";
 
 import {getRandomArrayElement} from "../lib/random.js";
+import {generateId} from "../lib/util.js";
 
 const TEST_COMMENT_DATE = `2019-05-11T16:12:32.554Z`;
 
 const createComment = () => ({
+  id: generateId(),
   emoji: getRandomArrayElement(EMOJI),
   date: TEST_COMMENT_DATE,
   author: getRandomArrayElement(AUTHORS),

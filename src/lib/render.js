@@ -19,6 +19,12 @@ const createElement = (template) => {
   return newElement.firstChild;
 };
 
+const removeChild = (parent) => {
+  if (parent.firstChild) {
+    parent.firstChild.remove();
+  }
+};
+
 const remove = (component) => {
   if (!(component instanceof Abstract)) {
     throw new Error(`Can remove only components`);
@@ -50,4 +56,4 @@ const replace = (newComponent, oldComponent) => {
   parentComponent.replaceChild(newComponent, oldComponent);
 };
 
-export {renderTemplate, createElement, render, remove, replace};
+export {renderTemplate, createElement, removeChild, render, remove, replace};

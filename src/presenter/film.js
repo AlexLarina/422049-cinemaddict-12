@@ -1,6 +1,10 @@
 import FilmView from "../view/film.js";
 import FilmPopupView from "../view/film-popup.js";
+
 import {render, remove, replace} from "../lib/render.js";
+import {CommentAction} from "../lib/const.js";
+
+import CommentListPresenter from "../presenter/comments-list.js";
 
 const DETAILS = {
   'watchlist': `toWatchList`,
@@ -27,13 +31,14 @@ export default class Film {
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);
-    this._handlePopupSubmit = this._handlePopupSubmit.bind(this);
     this._handleDetailsChange = this._handleDetailsChange.bind(this);
 
     this._handleFavouriteClick = this._handleFavouriteClick.bind(this);
     this._handleAddToWatchListClick = this._handleAddToWatchListClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
+
+    this._changeCommentsData = this._changeCommentsData.bind(this);
   }
 
   init(film) {
@@ -50,8 +55,6 @@ export default class Film {
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
     this._filmPopupComponent.setDetailsChangeHandler(this._handleDetailsChange);
-    this._filmPopupComponent.setEmojiClickHandler(this._handleEmojiClick);
-    this._filmPopupComponent.setFormSubmitHandler(this._handlePopupSubmit);
 
     if (previousFilmComponent === null || previousPopupComponent === null) {
       render(this._filmListContainer, this._filmComponent);
@@ -97,6 +100,13 @@ export default class Film {
   _showPopup() {
     render(this._filmPopupContainer, this._filmPopupComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
+
+    const commentsListPresenter = new CommentListPresenter(
+        this._filmPopupComponent.getCommentsContainer(),
+        this._changeCommentsData
+    );
+    commentsListPresenter.init(this._film.comments);
+
     this._changeMode();
     this._mode = Mode.POPUP;
   }
@@ -116,6 +126,43 @@ export default class Film {
     if (evt.key === `Escape` || evt.key === `Esc`) {
       evt.preventDefault();
       this._hidePopup();
+    }
+  }
+
+  _changeCommentsData(actionType, comment) {
+    let updatedComments = this._film.comments.slice();
+
+    switch (actionType) {
+      case CommentAction.DELETE:
+        updatedComments = this._film.comments.filter((item) => item.id !== comment.id);
+
+        this._changeData(
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: updatedComments
+                }
+            )
+        );
+        break;
+
+      case CommentAction.ADD:
+        // офигенный прикол: после push updatedComments хранил в себе длину массива,
+        // это что за магия вне Хогвартса ?
+        // updatedComments = this._film.comments.push(comment);
+        updatedComments = [...updatedComments, comment];
+
+        this._changeData(
+            Object.assign(
+                {},
+                this._film,
+                {
+                  comments: updatedComments
+                }
+            )
+        );
+        break;
     }
   }
 
@@ -177,13 +224,5 @@ export default class Film {
             }
         )
     );
-  }
-
-  _handleEmojiClick() {
-
-  }
-
-  _handlePopupSubmit(film) {
-    this._changeData(film);
   }
 }
