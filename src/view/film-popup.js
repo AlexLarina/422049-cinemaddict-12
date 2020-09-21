@@ -1,4 +1,3 @@
-
 import SmartView from "./smart.js";
 import createCommentsTemplate from "./comments.js";
 

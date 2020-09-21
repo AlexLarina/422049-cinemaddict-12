@@ -48,7 +48,6 @@ export default class Navigation extends AbstractView {
       return;
     }
     evt.preventDefault();
-    console.log(evt.target.dataset.filterType);
 
     this._callback.filterClick(evt.target.dataset.filterType);
   }

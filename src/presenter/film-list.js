@@ -90,12 +90,9 @@ export default class FilmList {
 
   _handleViewAction(update) {
     this._filmsModel.updateFilm(update);
-    console.log(update);
   }
 
-  _handleModelEvent(data) {
-    console.log(data);
-    //this._filmPresenter[data.id].init(data);
+  _handleModelEvent() {
     this._clearFilmList();
     this._renderFilmBoard();
   }

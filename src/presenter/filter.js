@@ -32,8 +32,6 @@ export default class Filter {
 
     replace(this._navComponent, previousNavComponent);
     remove(previousNavComponent);
-
-    // render(this._navContainer, this._navComponent);
   }
 
   _handleModelEvent() {
