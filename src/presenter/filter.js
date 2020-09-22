@@ -1,5 +1,5 @@
 import {remove, render, replace} from "../lib/render.js";
-import {FilterType} from "../lib/const.js";
+import {FilterType, UpdateType} from "../lib/const.js";
 import {filtrate} from "../lib/filter.js";
 import NavigationView from "../view/navigation.js";
 
@@ -39,7 +39,7 @@ export default class Filter {
   }
 
   _handleFilterClick(filterType) {
-    this._filterModel.setFilter(filterType);
+    this._filterModel.setFilter(UpdateType.FILTER, filterType);
   }
 
   _getFilters() {

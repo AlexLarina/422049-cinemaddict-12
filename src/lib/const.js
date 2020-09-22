@@ -16,4 +16,9 @@ export const CommentAction = {
   DELETE: `delete`
 };
 
+export const UpdateType = {
+  PATCH: `PATCH`,
+  FILTER: `FILTER`
+};
+
 export const MAX_CARDS_SHOWN_PER_STEP = 5;

@@ -1,5 +1,5 @@
 import {remove, render} from "../lib/render.js";
-import {SortType, MAX_CARDS_SHOWN_PER_STEP} from "../lib/const.js";
+import {SortType, MAX_CARDS_SHOWN_PER_STEP, UpdateType} from "../lib/const.js";
 import {sortByDate, sortByRating} from "../lib/sort.js";
 import {filtrate} from "../lib/filter.js";
 
@@ -88,18 +88,20 @@ export default class FilmList {
 
   }
 
-  _handleViewAction(update, updateComment) {
-    if (updateComment) {
-      this._filmsModel.updateComment(update, updateComment);
-      return;
-    }
-
-    this._filmsModel.updateFilm(update);
+  _handleViewAction(updateType, update) {
+    this._filmsModel.updateFilm(updateType, update);
   }
 
-  _handleModelEvent() {
-    this._clearFilmList();
-    this._renderFilmBoard();
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._filmPresenter[data.id].init(data);
+        break;
+      case UpdateType.FILTER:
+        this._clearFilmList();
+        this._renderFilmBoard();
+        break;
+    }
   }
 
   _handleSortTypeClick(sortType) {

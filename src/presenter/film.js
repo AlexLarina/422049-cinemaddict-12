@@ -2,7 +2,7 @@ import FilmView from "../view/film.js";
 import FilmPopupView from "../view/film-popup.js";
 
 import {render, remove, replace} from "../lib/render.js";
-import {CommentAction} from "../lib/const.js";
+import {CommentAction, UpdateType} from "../lib/const.js";
 
 import CommentListPresenter from "../presenter/comments-list.js";
 
@@ -52,6 +52,11 @@ export default class Film {
 
     const previousPopupComponent = this._filmPopupComponent;
     this._filmPopupComponent = new FilmPopupView(film);
+    const commentsListPresenter = new CommentListPresenter(
+        this._filmPopupComponent.getCommentsContainer(),
+        this._changeCommentsData
+    );
+    commentsListPresenter.init(this._film.comments);
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
     this._filmPopupComponent.setDetailsChangeHandler(this._handleDetailsChange);
@@ -101,11 +106,11 @@ export default class Film {
     render(this._filmPopupContainer, this._filmPopupComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
-    const commentsListPresenter = new CommentListPresenter(
-        this._filmPopupComponent.getCommentsContainer(),
-        this._changeCommentsData
-    );
-    commentsListPresenter.init(this._film.comments);
+    // const commentsListPresenter = new CommentListPresenter(
+    //     this._filmPopupComponent.getCommentsContainer(),
+    //     this._changeCommentsData
+    // );
+    // commentsListPresenter.init(this._film.comments);
 
     this._changeMode();
     this._mode = Mode.POPUP;
@@ -137,6 +142,7 @@ export default class Film {
         updatedComments = this._film.comments.filter((item) => item.id !== comment.id);
 
         this._changeData(
+            UpdateType.PATCH,
             Object.assign(
                 {},
                 this._film,
@@ -154,6 +160,7 @@ export default class Film {
         updatedComments = [...updatedComments, comment];
 
         this._changeData(
+            UpdateType.PATCH,
             Object.assign(
                 {},
                 this._film,
@@ -176,6 +183,7 @@ export default class Film {
 
   _handleFavouriteClick() {
     this._changeData(
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -188,6 +196,7 @@ export default class Film {
 
   _handleAddToWatchListClick() {
     this._changeData(
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -200,6 +209,7 @@ export default class Film {
 
   _handleWatchedClick() {
     this._changeData(
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
@@ -216,6 +226,7 @@ export default class Film {
     }
 
     this._changeData(
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._film,
