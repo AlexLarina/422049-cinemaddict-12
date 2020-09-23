@@ -1,11 +1,13 @@
-import {render} from "./lib/render.js";
+import {UpdateType, FilterType} from "./lib/const.js";
+import {render, remove} from "./lib/render.js";
 
 import ProfileView from "./view/profile.js";
 import SortView from "./view/sort.js";
-import StatsView from "./view/stats.js";
+import FooterStatsView from "./view/footer-stats.js";
 
 import FilmListPresenter from "./presenter/film-list.js";
-import FilterPresenter from "./presenter/filter.js";
+import NavigationPresenter from "./presenter/navigation.js";
+import StatsPresenter from "./presenter/stats.js";
 
 import FilmsModel from "./model/films.js";
 import FilterModel from "./model/filter.js";
@@ -28,12 +30,26 @@ const filterModel = new FilterModel();
 const sortComponent = new SortView();
 
 render(mainHeaderElement, new ProfileView());
-render(mainFooterElement, new StatsView());
+render(mainFooterElement, new FooterStatsView());
 
 const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel, filterModel);
-const filterPresenter = new FilterPresenter(mainElement, filterModel, filmsModel);
+const statsPresenter = new StatsPresenter(mainElement, filmsModel.getFilms());
 
-filterPresenter.init();
+const statsShowHandler = () => {
+  filmListPresenter.destroy();
+  statsPresenter.init();
+};
+
+const filmListInitHandler = () => {
+  statsPresenter.destroy();
+
+  //filterModel.setFilter(UpdateType.FILTER, FilterType.ALL);
+  filmListPresenter.init();
+};
+
+const navPresenter = new NavigationPresenter(mainElement, filterModel, filmsModel, filmListInitHandler, statsShowHandler);
+
+navPresenter.init();
 render(mainElement, sortComponent);
 filmListPresenter.init();
 

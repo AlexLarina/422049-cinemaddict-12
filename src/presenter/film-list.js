@@ -25,13 +25,24 @@ export default class FilmList {
     this._handleSortTypeClick = this._handleSortTypeClick.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
-
-    this._filmsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
+    this._filmsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderFilmBoard();
+  }
+
+  destroy() {
+    this._clearFilmList();
+
+    remove(this._filmBoardComponent);
+    // ???
+    remove(this._emptyComponent);
+
+    this._filmsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _getFilms() {

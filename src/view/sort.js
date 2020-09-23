@@ -34,8 +34,8 @@ export default class Sort extends AbstractView {
     this._callback.sortTypeClick(evt.target.dataset.sortType);
   }
 
-  _setActiveSortType(filter) {
-    filter.classList.add(`sort__button--active`);
+  _setActiveSortType(sortElement) {
+    sortElement.classList.add(`sort__button--active`);
   }
 
   _removeActiveSortType() {

@@ -106,12 +106,6 @@ export default class Film {
     render(this._filmPopupContainer, this._filmPopupComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
-    // const commentsListPresenter = new CommentListPresenter(
-    //     this._filmPopupComponent.getCommentsContainer(),
-    //     this._changeCommentsData
-    // );
-    // commentsListPresenter.init(this._film.comments);
-
     this._changeMode();
     this._mode = Mode.POPUP;
   }
