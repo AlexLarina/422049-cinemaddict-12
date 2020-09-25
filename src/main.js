@@ -1,5 +1,5 @@
-import {UpdateType, FilterType} from "./lib/const.js";
-import {render, remove} from "./lib/render.js";
+import {StatsFilterType} from "./lib/const.js";
+import {render} from "./lib/render.js";
 
 import ProfileView from "./view/profile.js";
 import SortView from "./view/sort.js";
@@ -14,7 +14,7 @@ import FilterModel from "./model/filter.js";
 
 import creatFilmDataArray from "./mocks/films.js";
 
-const FILM_CARDS_AMOUNT = 0;
+const FILM_CARDS_AMOUNT = 8;
 
 const mainHeaderElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -37,13 +37,11 @@ const statsPresenter = new StatsPresenter(mainElement, filmsModel);
 
 const statsShowHandler = () => {
   filmListPresenter.destroy();
-  statsPresenter.init(`all-time`);
+  statsPresenter.init(StatsFilterType.ALL);
 };
 
 const filmListInitHandler = () => {
   statsPresenter.destroy();
-
-  //filterModel.setFilter(UpdateType.FILTER, FilterType.ALL);
   filmListPresenter.init();
 };
 

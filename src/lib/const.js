@@ -26,4 +26,20 @@ export const PageMode = {
   STATS: `stats`
 };
 
+export const StatsFilterType = {
+  ALL: `all-time`,
+  TODAY: `today`,
+  WEEK: `week`,
+  MONTH: `month`,
+  YEAR: `year`
+};
+
+// @TO-DO посооображать по поводу месяца и года
+export const PeriodsInSeconds = {
+  DAY: 24 * 60 * 60,
+  WEEK: 7 * 24 * 60 * 60,
+  MONTH: 30 * 7 * 24 * 60 * 60,
+  YEAR: 365 * 24 * 60 * 60
+};
+
 export const MAX_CARDS_SHOWN_PER_STEP = 5;

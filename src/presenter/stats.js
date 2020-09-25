@@ -1,28 +1,7 @@
 import {remove, render} from "../lib/render.js";
+import {PeriodsFromNow} from "../lib/statistics.js";
+import {StatsFilterType} from "../lib/const.js";
 import StatsView from "../view/stats.js";
-
-const StatsFilterType = {
-  ALL: `all-time`,
-  TODAY: `today`,
-  WEEK: `week`,
-  MONTH: `month`,
-  YEAR: `year`
-};
-
-// @TO-DO посооображать по поводу месяца и года
-const PeriodsInSeconds = {
-  DAY: 24 * 60 * 60,
-  WEEK: 7 * 24 * 60 * 60,
-  MONTH: 30 * 7 * 24 * 60 * 60,
-  YEAR: 365 * 24 * 60 * 60
-};
-
-const PeriodsFromNow = {
-  TODAY: Date.now() - PeriodsInSeconds.DAY * 1000,
-  LAST_WEEK: Date.now() / 1000 - PeriodsInSeconds.WEEK,
-  LAST_MONTH: Date.now() / 1000 - PeriodsInSeconds.MONTH,
-  LAST_YEAR: Date.now() / 1000 - PeriodsInSeconds.YEAR
-};
 
 export default class Stats {
   constructor(statsContainer, filmsModel) {
@@ -43,9 +22,6 @@ export default class Stats {
             this._filmsModel.getFilms()
         )
     );
-
-    const dates = films.map((film) => film.watchingDate);
-    console.log(dates);
 
     // создаем новую вьюшку
     this._statsComponent = new StatsView(films);

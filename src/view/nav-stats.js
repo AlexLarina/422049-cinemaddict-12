@@ -23,9 +23,6 @@ export default class NavStats extends Abstract {
       return;
     }
     evt.preventDefault();
-
-    console.log(evt.target.dataset);
-
     this._callback.statsClick();
   }
 

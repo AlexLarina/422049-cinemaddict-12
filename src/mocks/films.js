@@ -21,7 +21,6 @@ import {generateId} from "../lib/util.js";
 const COMMENTS_POPUP_AMOUNT = 4;
 
 const TEST_RELEASE_DATE = `2019-05-11T00:00:00.000Z`;
-const TEST_WATCHING_DATE = `2019-04-12T16:12:32.554Z`;
 
 const generateDate = (isWatched) => {
   if (!isWatched) {

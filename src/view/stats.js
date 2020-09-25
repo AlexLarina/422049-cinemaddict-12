@@ -1,34 +1,21 @@
 import Chart from "chart.js";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import moment from "moment";
 
-import {getMostFrequentElement, getElementsFrequency, capitalize} from "../lib/util.js";
+import {createStatsItems, sortgenresByFrequency} from "../lib/statistics.js";
+import {capitalize} from "../lib/util.js";
 
 import Smart from "./smart.js";
 
-const createGenresArray = (films) => {
-  let genresArray = [];
-  films.forEach((film) => genresArray.push(...film.genres));
-  return genresArray;
-};
-
 const renderChart = (statisticCtx, films) => {
-  const genresArray = createGenresArray(films);
-  const genresDictionary = getElementsFrequency(genresArray);
-
-  let genresSortedByFrequency = Object
-    .entries(genresDictionary)
-    .sort((a, b) => b[1] - a[1]);
-
-  genresSortedByFrequency = Object.fromEntries(genresSortedByFrequency);
+  const genres = sortgenresByFrequency(films);
 
   return new Chart(statisticCtx, {
     plugins: [ChartDataLabels],
     type: `horizontalBar`,
     data: {
-      labels: Object.keys(genresSortedByFrequency).map((genre) => capitalize(genre)),
+      labels: Object.keys(genres).map((genre) => capitalize(genre)),
       datasets: [{
-        data: Object.values(genresSortedByFrequency),
+        data: Object.values(genres),
         backgroundColor: `#ffe800`,
         hoverBackgroundColor: `#ffe800`,
         anchor: `start`
@@ -81,17 +68,7 @@ const renderChart = (statisticCtx, films) => {
 };
 
 const createStatsTemplate = (films) => {
-  const filmsCount = films.length;
-  let totalTimeMinutes = films.reduce((accumulator, currentValue) => accumulator + currentValue.duration, 0);
-  totalTimeMinutes = moment
-    .utc()
-    .startOf(`day`)
-    .add({
-      minutes: totalTimeMinutes
-    });
-
-  const genresArray = createGenresArray(films);
-  const topGenre = capitalize(getMostFrequentElement(genresArray));
+  const {amount, duration, topGenre} = createStatsItems(films);
 
   return (
     `<section class="statistic">
@@ -124,13 +101,13 @@ const createStatsTemplate = (films) => {
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
           <p class="statistic__item-text">
-            ${filmsCount} <span class="statistic__item-description">movies</span>
+            ${amount} <span class="statistic__item-description">movies</span>
           </p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
           <p class="statistic__item-text">
-            ${totalTimeMinutes.format(`H`)} <span class="statistic__item-description">h</span> ${totalTimeMinutes.format(`mm`)} <span class="statistic__item-description">m</span>
+            ${duration.format(`H`)} <span class="statistic__item-description">h</span> ${duration.format(`mm`)} <span class="statistic__item-description">m</span>
             </p>
         </li>
         <li class="statistic__text-item">
@@ -164,7 +141,7 @@ export default class Stats extends Smart {
     if (evt.target.name !== `statistic-filter`) {
       return;
     }
-    console.log(evt.target);
+
     evt.preventDefault();
     this._callback.periodChangeHandler(evt.target.value);
   }

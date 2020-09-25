@@ -68,7 +68,6 @@ export default class Navigation {
     }
 
     this._pageMode = PageMode.FILM_LIST;
-    //this._handleFilmListFiltrate();
   }
 
   _handleStatsClick() {
