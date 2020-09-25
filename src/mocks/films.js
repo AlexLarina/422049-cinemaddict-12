@@ -28,8 +28,8 @@ const generateDate = (isWatched) => {
     return null;
   }
 
-  const maxDaysGap = 7;
-  const daysGap = createRandomNumber(-maxDaysGap, maxDaysGap);
+  const maxDaysGap = 50;
+  const daysGap = createRandomNumber(-maxDaysGap, 0);
   const currentDate = new Date();
 
   currentDate.setHours(23, 59, 59, 999);

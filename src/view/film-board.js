@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 import FilmBoardSpecialView from "./film-board-special.js";
 
 const HEADINGS = [`Top rated`, `Most commented`];
@@ -23,7 +23,7 @@ const createFilmSectionTemplate = () => {
   );
 };
 
-export default class FilmBoard extends AbstractView {
+export default class FilmBoard extends Abstract {
   constructor() {
     super();
 

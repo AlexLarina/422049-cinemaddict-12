@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 
 const createNavigationItemTemplate = (filter) => {
   // сделать деструктуризацию объекта или и так норм ?
@@ -28,7 +28,7 @@ const createNavFiltersTemplate = (filters) => {
   );
 };
 
-export default class NavFilters extends AbstractView {
+export default class NavFilters extends Abstract {
   constructor(filters) {
     super();
 

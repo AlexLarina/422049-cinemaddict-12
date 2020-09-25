@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 
 import {formatReleaseYear, formatDuration} from "../lib/date.js";
 
@@ -26,7 +26,7 @@ const createFilmCardTemplate = (film) => {
   );
 };
 
-export default class Film extends AbstractView {
+export default class Film extends Abstract {
   constructor(film) {
     super();
     this._film = film;

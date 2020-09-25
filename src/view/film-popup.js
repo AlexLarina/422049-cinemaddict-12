@@ -1,4 +1,4 @@
-import SmartView from "./smart.js";
+import Smart from "./smart.js";
 
 import {formatReleaseDate, formatDuration} from "../lib/date.js";
 import {capitalize} from "../lib/util.js";
@@ -91,7 +91,7 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup extends SmartView {
+export default class FilmPopup extends Smart {
   constructor(film) {
     super();
     this._film = film;

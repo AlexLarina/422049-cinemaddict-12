@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 import {render, createElement, removeChild} from "../lib/render.js";
 
 import {generateId} from "../lib/util.js";
@@ -56,7 +56,7 @@ const createCommentsTemplate = () => {
   );
 };
 
-export default class Comments extends AbstractView {
+export default class Comments extends Abstract {
   constructor() {
     super();
 

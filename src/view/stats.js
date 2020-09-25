@@ -4,7 +4,7 @@ import moment from "moment";
 
 import {getMostFrequentElement, getElementsFrequency, capitalize} from "../lib/util.js";
 
-import SmartView from "./smart.js";
+import Smart from "./smart.js";
 
 const createGenresArray = (films) => {
   let genresArray = [];
@@ -98,7 +98,7 @@ const createStatsTemplate = (films) => {
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">Sci-Fighter</span>
+        <span class="statistic__rank-label">No one</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -147,7 +147,7 @@ const createStatsTemplate = (films) => {
   );
 };
 
-export default class Stats extends SmartView {
+export default class Stats extends Smart {
   constructor(films) {
     super();
 
@@ -164,7 +164,7 @@ export default class Stats extends SmartView {
     if (evt.target.name !== `statistic-filter`) {
       return;
     }
-
+    console.log(evt.target);
     evt.preventDefault();
     this._callback.periodChangeHandler(evt.target.value);
   }

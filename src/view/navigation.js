@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 
 const createNavigationTemplate = () => {
   return (
@@ -8,7 +8,7 @@ const createNavigationTemplate = () => {
   );
 };
 
-export default class Navigation extends AbstractView {
+export default class Navigation extends Abstract {
   getTemplate() {
     return createNavigationTemplate();
   }

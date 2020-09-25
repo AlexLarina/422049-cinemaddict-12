@@ -12,7 +12,7 @@ const createNoFilmTemplate = () => {
   );
 };
 
-export default class Empty extends Abstract {
+export default class EmptyBoard extends Abstract {
   getTemplate() {
     return createNoFilmTemplate();
   }

@@ -14,7 +14,7 @@ import FilterModel from "./model/filter.js";
 
 import creatFilmDataArray from "./mocks/films.js";
 
-const FILM_CARDS_AMOUNT = 8;
+const FILM_CARDS_AMOUNT = 0;
 
 const mainHeaderElement = document.querySelector(`.header`);
 const mainElement = document.querySelector(`.main`);
@@ -33,11 +33,11 @@ render(mainHeaderElement, new ProfileView());
 render(mainFooterElement, new FooterStatsView());
 
 const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel, filterModel);
-const statsPresenter = new StatsPresenter(mainElement, filmsModel.getFilms());
+const statsPresenter = new StatsPresenter(mainElement, filmsModel);
 
 const statsShowHandler = () => {
   filmListPresenter.destroy();
-  statsPresenter.init();
+  statsPresenter.init(`all-time`);
 };
 
 const filmListInitHandler = () => {

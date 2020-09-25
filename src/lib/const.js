@@ -21,4 +21,9 @@ export const UpdateType = {
   FILTER: `FILTER`
 };
 
+export const PageMode = {
+  FILM_LIST: `filmList`,
+  STATS: `stats`
+};
+
 export const MAX_CARDS_SHOWN_PER_STEP = 5;

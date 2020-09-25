@@ -1,5 +1,5 @@
 import {remove, render, replace} from "../lib/render.js";
-import {FilterType, UpdateType} from "../lib/const.js";
+import {FilterType, UpdateType, PageMode} from "../lib/const.js";
 import {filtrate} from "../lib/filter.js";
 
 import NavigationView from "../view/navigation.js";
@@ -23,6 +23,8 @@ export default class Navigation {
 
     this._filmsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+
+    this._pageMode = PageMode.FILM_LIST;
   }
 
   init() {
@@ -61,10 +63,16 @@ export default class Navigation {
 
   _handleFilterClick(filterType) {
     this._filterModel.setFilter(UpdateType.FILTER, filterType);
-    this._handleFilmListFiltrate();
+    if (this._pageMode === PageMode.STATS) {
+      this._handleFilmListFiltrate();
+    }
+
+    this._pageMode = PageMode.FILM_LIST;
+    //this._handleFilmListFiltrate();
   }
 
   _handleStatsClick() {
+    this._pageMode = PageMode.STATS;
     this._handleStatsShow();
   }
 

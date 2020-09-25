@@ -4,7 +4,7 @@ import {sortByDate, sortByRating} from "../lib/sort.js";
 import {filtrate} from "../lib/filter.js";
 
 import FilmBoardView from "../view/film-board.js";
-import EmptyView from "../view/empty.js";
+import EmptyBoardView from "../view/empty-board.js";
 
 import FilmPresenter from "../presenter/film.js";
 
@@ -18,7 +18,7 @@ export default class FilmList {
     this._filmPresenter = {};
 
     this._filmBoardComponent = new FilmBoardView();
-    this._emptyComponent = new EmptyView();
+    this._emptyComponent = new EmptyBoardView();
     this._sortComponent = sortComponent;
 
     this._handleModeChange = this._handleModeChange.bind(this);

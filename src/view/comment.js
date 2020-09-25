@@ -1,7 +1,7 @@
 import he from "he";
 import {formatCommentDate} from "../lib/date.js";
 
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 
 const createCommentTemplate = (comment) => {
   return (
@@ -21,7 +21,7 @@ const createCommentTemplate = (comment) => {
   );
 };
 
-export default class Comment extends AbstractView {
+export default class Comment extends Abstract {
   constructor(comment) {
     super();
 

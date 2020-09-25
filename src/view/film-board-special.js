@@ -1,7 +1,4 @@
-import AbstractView from "./abstract.js";
-
-// ${films.map((film) => new FilmView(film).getTemplate())
-//   .join(``)}
+import Abstract from "./abstract.js";
 
 const createExtraFilmListTemplate = (heading) => {
   return (
@@ -15,7 +12,7 @@ const createExtraFilmListTemplate = (heading) => {
   );
 };
 
-export default class FilmBoardSpecial extends AbstractView {
+export default class FilmBoardSpecial extends Abstract {
   constructor(heading) {
     super();
     this._heading = heading;

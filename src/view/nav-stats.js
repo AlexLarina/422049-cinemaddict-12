@@ -1,4 +1,4 @@
-import AbstractView from "./abstract.js";
+import Abstract from "./abstract.js";
 
 const createNavStatsTemplate = () => {
   return (
@@ -12,7 +12,7 @@ const createNavStatsTemplate = () => {
   );
 };
 
-export default class NavStats extends AbstractView {
+export default class NavStats extends Abstract {
   constructor() {
     super();
     this._statsClickHandler = this._statsClickHandler.bind(this);
