@@ -8,6 +8,8 @@ const HTTPSuccessStatusRange = {
 const Method = {
   GET: `GET`,
   PUT: `PUT`,
+  POST: `POST`,
+  DELETE: `DELETE`
 };
 
 export default class Api {
@@ -36,6 +38,13 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then(FilmsModel.adaptToClient);
+  }
+
+  deleteComment(comment) {
+    return this._load({
+      url: `/comments/${comment.id}`,
+      method: Method.DELETE
+    });
   }
 
   _load({

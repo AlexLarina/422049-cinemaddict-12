@@ -96,12 +96,17 @@ export default class Film {
         this._renderComments(comments);
       })
       .catch(() => {
+        // @TO-DO что показать, если комменты не подгрузились
         this._commentsListPresenter.init([]);
       });
   }
 
   _renderComments(comments) {
     if (this._isCommentArrayLoaded) {
+      // const commentsListPresenter = new CommentListPresenter(
+      //     this._filmPopupComponent.getCommentsContainer(),
+      //     this._changeCommentsData
+      // );
       this._commentsListPresenter.init(comments);
     }
   }
@@ -155,18 +160,21 @@ export default class Film {
 
     switch (actionType) {
       case CommentAction.DELETE:
-        updatedComments = this._film.comments.filter((item) => item.id !== comment.id);
+        this._api.deleteComment(comment).then(() => {
+          this._getComments();
+        });
+        // updatedComments = this._film.comments.filter((item) => item.id !== comment.id);
 
-        this._changeData(
-            UpdateType.PATCH,
-            Object.assign(
-                {},
-                this._film,
-                {
-                  comments: updatedComments
-                }
-            )
-        );
+        // this._changeData(
+        //     UpdateType.PATCH,
+        //     Object.assign(
+        //         {},
+        //         this._film,
+        //         {
+        //           comments: updatedComments
+        //         }
+        //     )
+        // );
         break;
 
       case CommentAction.ADD:
