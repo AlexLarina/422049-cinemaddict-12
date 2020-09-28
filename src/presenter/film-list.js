@@ -57,12 +57,9 @@ export default class FilmList {
 
     switch (this._currentSortType) {
       case SortType.DATE:
-        console.log(filteredFilms.sort(sortByDate));
         return filteredFilms.sort(sortByDate);
-        // return filteredFilms.getFilms().slice().sort(sortByDate);
       case SortType.RATING:
         return filteredFilms.sort(sortByRating);
-        //return filteredFilms.getFilms().slice().sort(sortByRating);
     }
 
     return filteredFilms;
