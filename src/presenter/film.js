@@ -19,11 +19,12 @@ const Mode = {
 
 
 export default class Film {
-  constructor(filmListContainer, filmPopupContainer, changeData, changeMode) {
+  constructor(filmListContainer, filmPopupContainer, changeData, changeMode, api) {
     this._filmListContainer = filmListContainer;
     this._filmPopupContainer = filmPopupContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._api = api;
 
     this._filmComponent = null;
     this._filmPopupComponent = null;
@@ -56,7 +57,19 @@ export default class Film {
         this._filmPopupComponent.getCommentsContainer(),
         this._changeCommentsData
     );
-    commentsListPresenter.init(this._film.comments);
+
+    this._api
+      .getFilmComments(this._film.id)
+      .then((comments) => {
+        commentsListPresenter.init(comments);
+        console.log(comments);
+      })
+      .catch(() => {
+        console.log(`комментики не подгрузились`);
+        commentsListPresenter.init([]);
+      });
+
+    //commentsListPresenter.init(this._film.comments);
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
     this._filmPopupComponent.setDetailsChangeHandler(this._handleDetailsChange);

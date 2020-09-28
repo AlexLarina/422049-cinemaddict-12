@@ -5,20 +5,25 @@ import {filtrate} from "../lib/filter.js";
 
 import FilmBoardView from "../view/film-board.js";
 import EmptyBoardView from "../view/empty-board.js";
+import LoadingView from "../view/loading.js";
 
 import FilmPresenter from "../presenter/film.js";
 
 export default class FilmList {
-  constructor(filmListContainer, sortComponent, filmsModel, filterModel) {
+  constructor(filmListContainer, sortComponent, filmsModel, filterModel, api) {
     this._filmsModel = filmsModel;
     this._filterModel = filterModel;
     this._filmListContainer = filmListContainer;
+    this._api = api;
+
     this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
 
     this._filmPresenter = {};
+    this._isLoading = true;
 
     this._filmBoardComponent = new FilmBoardView();
     this._emptyComponent = new EmptyBoardView();
+    this._loadingComponent = new LoadingView();
     this._sortComponent = sortComponent;
 
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -65,8 +70,11 @@ export default class FilmList {
         this._filmBoardComponent.getContainer(),
         this._filmListContainer,
         this._handleViewAction,
-        this._handleModeChange
+        this._handleModeChange,
+        this._api
     );
+
+    console.log(filmItem);
 
     filmPresenter.init(filmItem);
     this._filmPresenter[filmItem.id] = filmPresenter;
@@ -80,6 +88,10 @@ export default class FilmList {
     render(this._filmListContainer, this._emptyComponent);
   }
 
+  _renderLoading() {
+    render(this._filmListContainer, this._loadingComponent);
+  }
+
   _clearFilmList() {
     const filmCount = this._getFilms().length;
 
@@ -90,6 +102,7 @@ export default class FilmList {
 
     // @ TO-DO зачем его удалять, если он будет null. Добавить проверку ?
     remove(this._emptyComponent);
+    remove(this._loadingComponent);
 
     this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
 
@@ -100,7 +113,10 @@ export default class FilmList {
   }
 
   _handleViewAction(updateType, update) {
-    this._filmsModel.updateFilm(updateType, update);
+    //this._filmsModel.updateFilm(updateType, update);
+    this._api.updateFilm(update).then((responce) => {
+      this._filmsModel.updateFilm(updateType, responce);
+    });
   }
 
   _handleModelEvent(updateType, data) {
@@ -110,6 +126,11 @@ export default class FilmList {
         break;
       case UpdateType.FILTER:
         this._clearFilmList();
+        this._renderFilmBoard();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
         this._renderFilmBoard();
         break;
     }
@@ -127,8 +148,16 @@ export default class FilmList {
   }
 
   _renderFilmBoard() {
-    const filmCount = this._getFilms().length;
-    const films = this._getFilms().slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP));
+    // const filmCount = this._getFilms().length;
+    // const films = this._getFilms().slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP));
+
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
+
+    const films = this._getFilms();
+    const filmCount = films.length;
 
     if (filmCount === 0) {
       this._renderEmptyBoard();
@@ -136,7 +165,8 @@ export default class FilmList {
     }
 
     render(this._filmListContainer, this._filmBoardComponent);
-    this._renderFilms(films);
+    // this._renderFilms(films);
+    this._renderFilms(films.slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP)));
 
     if (filmCount > MAX_CARDS_SHOWN_PER_STEP) {
       this._handleLoadMoreButtonClick(this._filmItems);

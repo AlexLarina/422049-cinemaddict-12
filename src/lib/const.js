@@ -18,7 +18,8 @@ export const CommentAction = {
 
 export const UpdateType = {
   PATCH: `PATCH`,
-  FILTER: `FILTER`
+  FILTER: `FILTER`,
+  INIT: `INIT`
 };
 
 export const PageMode = {
