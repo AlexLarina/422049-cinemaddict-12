@@ -178,21 +178,25 @@ export default class Film {
         break;
 
       case CommentAction.ADD:
+        this._api.addComment(comment, this._film.id).then(() => {
+          this._getComments();
+        });
         // офигенный прикол: после push updatedComments хранил в себе длину массива,
         // это что за магия вне Хогвартса ?
         // updatedComments = this._film.comments.push(comment);
-        updatedComments = [...updatedComments, comment];
 
-        this._changeData(
-            UpdateType.PATCH,
-            Object.assign(
-                {},
-                this._film,
-                {
-                  comments: updatedComments
-                }
-            )
-        );
+        // updatedComments = [...updatedComments, comment];
+
+        // this._changeData(
+        //     UpdateType.PATCH,
+        //     Object.assign(
+        //         {},
+        //         this._film,
+        //         {
+        //           comments: updatedComments
+        //         }
+        //     )
+        // );
         break;
     }
   }

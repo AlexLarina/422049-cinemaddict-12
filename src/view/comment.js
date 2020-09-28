@@ -7,7 +7,7 @@ const createCommentTemplate = (comment) => {
   return (
     `<li class="film-details__comment">
       <span class="film-details__comment-emoji">
-        <img src="./images/emoji/${comment.emoji ? comment.emoji : `smile`}.png" width="55" height="55" alt="emoji-${comment.emoji ? comment.emoji : `smile`}">
+        <img src="./images/emoji/${comment.emotion ? comment.emotion : `smile`}.png" width="55" height="55" alt="emoji-${comment.emotion ? comment.emotion : `smile`}">
       </span>
       <div>
         <p class="film-details__comment-text">${he.encode(comment.comment)}</p>

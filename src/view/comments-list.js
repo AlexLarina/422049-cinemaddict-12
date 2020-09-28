@@ -106,11 +106,9 @@ export default class Comments extends Abstract {
     }
 
     const newComment = {
-      id: generateId(),
-      emoji: emojiChosen,
-      date: `Now`,
-      author: `Anonim`,
-      message: evt.target.value
+      emotion: emojiChosen,
+      date: new Date().toISOString(),
+      comment: evt.target.value
     };
 
     return newComment;

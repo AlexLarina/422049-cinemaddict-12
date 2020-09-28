@@ -47,6 +47,17 @@ export default class Api {
     });
   }
 
+  addComment(comment, filmID) {
+    return this._load({
+      url: `/comments/${filmID}`,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({"Content-Type": `application/json`})
+    })
+      .then(Api.toJSON);
+      //.then(TasksModel.adaptToClient);
+  }
+
   _load({
     url,
     method = Method.GET,
