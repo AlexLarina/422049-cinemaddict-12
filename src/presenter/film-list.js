@@ -74,8 +74,6 @@ export default class FilmList {
         this._api
     );
 
-    console.log(filmItem);
-
     filmPresenter.init(filmItem);
     this._filmPresenter[filmItem.id] = filmPresenter;
   }
@@ -113,7 +111,6 @@ export default class FilmList {
   }
 
   _handleViewAction(updateType, update) {
-    //this._filmsModel.updateFilm(updateType, update);
     this._api.updateFilm(update).then((responce) => {
       this._filmsModel.updateFilm(updateType, responce);
     });
@@ -148,9 +145,6 @@ export default class FilmList {
   }
 
   _renderFilmBoard() {
-    // const filmCount = this._getFilms().length;
-    // const films = this._getFilms().slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP));
-
     if (this._isLoading) {
       this._renderLoading();
       return;
@@ -165,7 +159,6 @@ export default class FilmList {
     }
 
     render(this._filmListContainer, this._filmBoardComponent);
-    // this._renderFilms(films);
     this._renderFilms(films.slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP)));
 
     if (filmCount > MAX_CARDS_SHOWN_PER_STEP) {

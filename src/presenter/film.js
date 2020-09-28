@@ -54,24 +54,11 @@ export default class Film {
 
     const previousPopupComponent = this._filmPopupComponent;
     this._filmPopupComponent = new FilmPopupView(film);
-    // const commentsListPresenter = new CommentListPresenter(
-    //     this._filmPopupComponent.getCommentsContainer(),
-    //     this._changeCommentsData
-    // );
 
-    // this._api
-    //   .getFilmComments(this._film.id)
-    //   .then((comments) => {
-    //     this._isCommentArrayLoaded = true;
-    //     console.log(this._isCommentArrayLoaded);
-    //     console.log(comments);
-    //   })
-    //   .catch(() => {
-    //     console.log(`комментики не подгрузились`);
-    //     commentsListPresenter.init([]);
-    //   });
-
-    //commentsListPresenter.init(this._film.comments);
+    this._commentsListPresenter = new CommentListPresenter(
+        this._filmPopupComponent.getCommentsContainer(),
+        this._changeCommentsData
+    );
 
     this._filmPopupComponent.setClosePopupClickHandler(this._handleClosePopupClick);
     this._filmPopupComponent.setDetailsChangeHandler(this._handleDetailsChange);
@@ -106,24 +93,16 @@ export default class Film {
       .getFilmComments(this._film.id)
       .then((comments) => {
         this._isCommentArrayLoaded = true;
-        //this._renderComments(comments);
-        console.log(this._isCommentArrayLoaded);
-        console.log(comments);
         this._renderComments(comments);
       })
       .catch(() => {
-        // console.log(`комментики не подгрузились`);
-        // commentsListPresenter.init([]);
+        this._commentsListPresenter.init([]);
       });
   }
 
   _renderComments(comments) {
     if (this._isCommentArrayLoaded) {
-      const commentsListPresenter = new CommentListPresenter(
-          this._filmPopupComponent.getCommentsContainer(),
-          this._changeCommentsData
-      );
-      commentsListPresenter.init(comments);
+      this._commentsListPresenter.init(comments);
     }
   }
 
