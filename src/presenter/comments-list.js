@@ -45,11 +45,15 @@ export default class CommentList {
     this._commentsComponent.setNewCommentAreaAborted();
   }
 
+  setCommentAborted(commentID) {
+    this._commentsComponent.setCommentAbortedByID(commentID);
+  }
+
   _renderComment(comment) {
     this._commentComponent = new CommentView(comment);
 
-    this._commentComponent.setDeleteClickHandler(() => {
-      this._changeCommentData(CommentAction.DELETE, comment);
+    this._commentComponent.setDeleteClickHandler((id) => {
+      this._changeCommentData(CommentAction.DELETE, comment, id);
     });
 
     render(

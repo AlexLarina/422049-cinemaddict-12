@@ -1,8 +1,6 @@
 import Abstract from "./abstract.js";
 import {render, createElement, removeChild} from "../lib/render.js";
 
-import {generateId} from "../lib/util.js";
-
 const createNewCommentTemplate = () => {
   return (
     `<div class="film-details__new-comment">
@@ -95,6 +93,14 @@ export default class Comments extends Abstract {
       .querySelector(`.film-details__comment-input`);
 
     this.shake(newCommentInputElement);
+  }
+
+  setCommentAbortedByID(id) {
+    const commentElement = this
+      .getElement()
+      .querySelector(`li[data-id="${id}"]`);
+
+    this.shake(commentElement);
   }
 
   _emojiClickHandler(evt) {

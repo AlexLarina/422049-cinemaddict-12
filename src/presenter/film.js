@@ -151,7 +151,7 @@ export default class Film {
     }
   }
 
-  _changeCommentsData(actionType, comment) {
+  _changeCommentsData(actionType, comment, id) {
     switch (actionType) {
       case CommentAction.DELETE:
         this._api
@@ -160,7 +160,7 @@ export default class Film {
             this._getComments();
           })
           .catch(() => {
-            // @TO-DO а как конкретному комменту запилить?
+            this._commentsListPresenter.setCommentAborted(id);
           });
         break;
 
