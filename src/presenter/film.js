@@ -29,6 +29,7 @@ export default class Film {
     this._filmComponent = null;
     this._filmPopupComponent = null;
     this._mode = Mode.DEFAULT;
+    this._isCommentArrayLoaded = false;
 
     this._handleOpenPopupClick = this._handleOpenPopupClick.bind(this);
     this._handleClosePopupClick = this._handleClosePopupClick.bind(this);
@@ -53,21 +54,22 @@ export default class Film {
 
     const previousPopupComponent = this._filmPopupComponent;
     this._filmPopupComponent = new FilmPopupView(film);
-    const commentsListPresenter = new CommentListPresenter(
-        this._filmPopupComponent.getCommentsContainer(),
-        this._changeCommentsData
-    );
+    // const commentsListPresenter = new CommentListPresenter(
+    //     this._filmPopupComponent.getCommentsContainer(),
+    //     this._changeCommentsData
+    // );
 
-    this._api
-      .getFilmComments(this._film.id)
-      .then((comments) => {
-        commentsListPresenter.init(comments);
-        console.log(comments);
-      })
-      .catch(() => {
-        console.log(`комментики не подгрузились`);
-        commentsListPresenter.init([]);
-      });
+    // this._api
+    //   .getFilmComments(this._film.id)
+    //   .then((comments) => {
+    //     this._isCommentArrayLoaded = true;
+    //     console.log(this._isCommentArrayLoaded);
+    //     console.log(comments);
+    //   })
+    //   .catch(() => {
+    //     console.log(`комментики не подгрузились`);
+    //     commentsListPresenter.init([]);
+    //   });
 
     //commentsListPresenter.init(this._film.comments);
 
@@ -99,6 +101,32 @@ export default class Film {
     remove(this._filmPopupComponent);
   }
 
+  _getComments() {
+    this._api
+      .getFilmComments(this._film.id)
+      .then((comments) => {
+        this._isCommentArrayLoaded = true;
+        //this._renderComments(comments);
+        console.log(this._isCommentArrayLoaded);
+        console.log(comments);
+        this._renderComments(comments);
+      })
+      .catch(() => {
+        // console.log(`комментики не подгрузились`);
+        // commentsListPresenter.init([]);
+      });
+  }
+
+  _renderComments(comments) {
+    if (this._isCommentArrayLoaded) {
+      const commentsListPresenter = new CommentListPresenter(
+          this._filmPopupComponent.getCommentsContainer(),
+          this._changeCommentsData
+      );
+      commentsListPresenter.init(comments);
+    }
+  }
+
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
       this._hidePopup();
@@ -116,6 +144,8 @@ export default class Film {
   }
 
   _showPopup() {
+    this._getComments();
+
     render(this._filmPopupContainer, this._filmPopupComponent);
     document.addEventListener(`keydown`, this._escKeyDownHandler);
 
