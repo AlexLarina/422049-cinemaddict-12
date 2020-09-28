@@ -1,6 +1,7 @@
-const sortByDate = () => {
-  // @TO-DO реализовать вместе с moment
-  return 1;
+const sortByDate = (filmPrevious, filmNext) => {
+  const aDate = new Date(filmPrevious.releaseDate);
+  const bDate = new Date(filmNext.releaseDate);
+  return bDate - aDate;
 };
 
 const sortByRating = (filmPrevious, filmNext) => {
