@@ -18,7 +18,7 @@ export default class CommentList {
   init(comments) {
     this._comments = comments;
     const previousCommentsComponent = this._commentsComponent;
-    this._commentsComponent = new CommentsView();
+    this._commentsComponent = new CommentsView(this._isDisabled);
 
     this._renderCommentsList(this._comments);
     this._commentsComponent.getCommentCountElement().textContent = comments.length;
@@ -35,6 +35,14 @@ export default class CommentList {
 
     replace(this._commentsComponent, previousCommentsComponent);
     remove(previousCommentsComponent);
+  }
+
+  setSaving() {
+    this._commentsComponent.setNewCommentAreaDisabled();
+  }
+
+  setAborted() {
+    this._commentsComponent.setNewCommentAreaAborted();
   }
 
   _renderComment(comment) {

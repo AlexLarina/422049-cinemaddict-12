@@ -103,10 +103,6 @@ export default class Film {
 
   _renderComments(comments) {
     if (this._isCommentArrayLoaded) {
-      // const commentsListPresenter = new CommentListPresenter(
-      //     this._filmPopupComponent.getCommentsContainer(),
-      //     this._changeCommentsData
-      // );
       this._commentsListPresenter.init(comments);
     }
   }
@@ -156,47 +152,28 @@ export default class Film {
   }
 
   _changeCommentsData(actionType, comment) {
-    let updatedComments = this._film.comments.slice();
-
     switch (actionType) {
       case CommentAction.DELETE:
-        this._api.deleteComment(comment).then(() => {
-          this._getComments();
-        });
-        // updatedComments = this._film.comments.filter((item) => item.id !== comment.id);
-
-        // this._changeData(
-        //     UpdateType.PATCH,
-        //     Object.assign(
-        //         {},
-        //         this._film,
-        //         {
-        //           comments: updatedComments
-        //         }
-        //     )
-        // );
+        this._api
+          .deleteComment(comment)
+          .then(() => {
+            this._getComments();
+          })
+          .catch(() => {
+            // @TO-DO а как конкретному комменту запилить?
+          });
         break;
 
       case CommentAction.ADD:
-        this._api.addComment(comment, this._film.id).then(() => {
-          this._getComments();
-        });
-        // офигенный прикол: после push updatedComments хранил в себе длину массива,
-        // это что за магия вне Хогвартса ?
-        // updatedComments = this._film.comments.push(comment);
-
-        // updatedComments = [...updatedComments, comment];
-
-        // this._changeData(
-        //     UpdateType.PATCH,
-        //     Object.assign(
-        //         {},
-        //         this._film,
-        //         {
-        //           comments: updatedComments
-        //         }
-        //     )
-        // );
+        this._api
+          .addComment(comment, this._film.id)
+          .then(() => {
+            this._commentsListPresenter.setSaving();
+            this._getComments();
+          })
+          .catch(() => {
+            this._commentsListPresenter.setAborted();
+          });
         break;
     }
   }

@@ -33,8 +33,16 @@ export default class Comment extends Abstract {
     return createCommentTemplate(this._comment);
   }
 
+  _setDeletingState() {
+    this
+    .getElement()
+    .querySelector(`.film-details__comment-delete`)
+    .textContent = `Deleting...`;
+  }
+
   _deleteClickHandler(evt) {
     evt.preventDefault();
+    this._setDeletingState();
     this._callback.deleteClick();
   }
 
