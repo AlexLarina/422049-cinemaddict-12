@@ -7,4 +7,8 @@ const sortByRating = (filmPrevious, filmNext) => {
   return filmNext.rating - filmPrevious.rating;
 };
 
-export {sortByDate, sortByRating};
+const sortByComments = (filmPrevious, filmNext) => {
+  return filmNext.comments.length - filmPrevious.comments.length;
+};
+
+export {sortByDate, sortByRating, sortByComments};

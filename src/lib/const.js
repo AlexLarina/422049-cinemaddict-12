@@ -35,6 +35,11 @@ export const StatsFilterType = {
   YEAR: `year`
 };
 
+export const ExtraBoardType = {
+  RATED: `rated`,
+  COMMENTED: `commented`
+};
+
 // @TO-DO посооображать по поводу месяца и года
 export const PeriodsInSeconds = {
   DAY: 24 * 60 * 60,

@@ -16,8 +16,12 @@ const createFilmSectionTemplate = () => {
 
         <button class="films-list__show-more">Show more</button>
       </section>
-      ${new FilmBoardSpecialView(rated).getTemplate()}
-      ${new FilmBoardSpecialView(commented).getTemplate()}
+      <section class="films-list--extra" data-extra-type="rated">
+        ${new FilmBoardSpecialView(rated).getTemplate()}
+      </section>
+      <section class="films-list--extra" data-extra-type="commented">
+        ${new FilmBoardSpecialView(commented).getTemplate()}
+      </section>
     </section>
     `
   );
@@ -45,6 +49,16 @@ export default class FilmBoard extends Abstract {
 
   getShowMoreButton() {
     return this.getElement().querySelector(`.films-list__show-more`);
+  }
+
+  getRatedContainer() {
+    const ratedElement = this.getElement().querySelector(`[data-extra-type="rated"]`);
+    return ratedElement.querySelector(`.films-list__container`);
+  }
+
+  getCommentedContainer() {
+    const ratedElement = this.getElement().querySelector(`[data-extra-type="commented"]`);
+    return ratedElement.querySelector(`.films-list__container`);
   }
 
   setShowMoreClickHandler(callback) {

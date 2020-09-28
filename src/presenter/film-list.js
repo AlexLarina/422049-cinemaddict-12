@@ -1,6 +1,6 @@
 import {remove, render} from "../lib/render.js";
-import {SortType, MAX_CARDS_SHOWN_PER_STEP, UpdateType} from "../lib/const.js";
-import {sortByDate, sortByRating} from "../lib/sort.js";
+import {SortType, MAX_CARDS_SHOWN_PER_STEP, UpdateType, ExtraBoardType} from "../lib/const.js";
+import {sortByDate, sortByRating, sortByComments} from "../lib/sort.js";
 import {filtrate} from "../lib/filter.js";
 
 import FilmBoardView from "../view/film-board.js";
@@ -65,9 +65,9 @@ export default class FilmList {
     return filteredFilms;
   }
 
-  _renderFilm(filmItem) {
+  _renderFilm(filmItem, container) {
     const filmPresenter = new FilmPresenter(
-        this._filmBoardComponent.getContainer(),
+        container,
         this._filmListContainer,
         this._handleViewAction,
         this._handleModeChange,
@@ -78,8 +78,36 @@ export default class FilmList {
     this._filmPresenter[filmItem.id] = filmPresenter;
   }
 
-  _renderFilms(films) {
-    films.forEach((filmItem) => this._renderFilm(filmItem));
+  _renderFilms(films, container) {
+    films.forEach((filmItem) => this._renderFilm(filmItem, container));
+  }
+
+  _renderExtraBoard(boardType, films) {
+    const MAX_EXTRA_AMOUNT = 2;
+    switch (boardType) {
+      case ExtraBoardType.RATED:
+        const mostRated = films
+          .slice()
+          .sort(sortByRating)
+          .slice(0, MAX_EXTRA_AMOUNT);
+
+        this._renderFilms(
+            mostRated,
+            this._filmBoardComponent.getRatedContainer()
+        );
+        break;
+      case ExtraBoardType.COMMENTED:
+        const mostCommented = films
+          .slice()
+          .sort(sortByComments)
+          .slice(0, MAX_EXTRA_AMOUNT);
+
+        this._renderFilms(
+            mostCommented,
+            this._filmBoardComponent.getCommentedContainer()
+        );
+        break;
+    }
   }
 
   _renderEmptyBoard() {
@@ -159,7 +187,14 @@ export default class FilmList {
     }
 
     render(this._filmListContainer, this._filmBoardComponent);
-    this._renderFilms(films.slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP)));
+
+    this._renderFilms(
+        films.slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP)),
+        this._filmBoardComponent.getContainer()
+    );
+
+    this._renderExtraBoard(ExtraBoardType.RATED, films);
+    this._renderExtraBoard(ExtraBoardType.COMMENTED, films);
 
     if (filmCount > MAX_CARDS_SHOWN_PER_STEP) {
       this._handleLoadMoreButtonClick(this._filmItems);
@@ -180,7 +215,10 @@ export default class FilmList {
     const films = this._getFilms().slice(this._renderedFilmCount, newRenderedFilmCount);
 
     this._filmBoardComponent.setShowMoreClickHandler(() => {
-      this._renderFilms(films);
+      this._renderFilms(
+          films,
+          this._filmBoardComponent.getContainer()
+      );
 
       this._renderedFilmCount = newRenderedFilmCount;
 
