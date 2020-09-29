@@ -16,7 +16,7 @@ self.addEventListener(`install`, (evt) => {
           `/index.html`,
           `/bundle.js`,
           `/css/normalize.css`,
-          `/css/style.css`,
+          `/css/main.css`,
           `/images/background.png`,
           `images/bitmap.png`,
           `images/bitmap@2x.png`,

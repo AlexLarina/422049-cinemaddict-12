@@ -180,6 +180,7 @@ export default class FilmList {
 
     const films = this._getFilms();
     const filmCount = films.length;
+    console.log(filmCount);
 
     if (filmCount === 0) {
       this._renderEmptyBoard();
@@ -189,14 +190,14 @@ export default class FilmList {
     render(this._filmListContainer, this._filmBoardComponent);
 
     this._renderFilms(
-        films.slice(0, Math.min(filmCount, MAX_CARDS_SHOWN_PER_STEP)),
+        films.slice(0, Math.min(filmCount, this._renderedFilmCount)),
         this._filmBoardComponent.getContainer()
     );
 
     this._renderExtraBoard(ExtraBoardType.RATED, films);
     this._renderExtraBoard(ExtraBoardType.COMMENTED, films);
 
-    if (filmCount > MAX_CARDS_SHOWN_PER_STEP) {
+    if (filmCount > this._renderedFilmCount) {
       this._handleLoadMoreButtonClick(this._filmItems);
     } else {
       this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
