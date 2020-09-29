@@ -1,3 +1,5 @@
+import {nanoid} from "nanoid";
+
 import {remove, render} from "../lib/render.js";
 import {SortType, MAX_CARDS_SHOWN_PER_STEP, UpdateType, ExtraBoardType} from "../lib/const.js";
 import {sortByDate, sortByRating, sortByComments} from "../lib/sort.js";
@@ -75,7 +77,13 @@ export default class FilmList {
     );
 
     filmPresenter.init(filmItem);
-    this._filmPresenter[filmItem.id] = filmPresenter;
+    const presenterID = nanoid();
+    this._filmPresenter[filmItem.id + `-` + presenterID] = filmPresenter;
+    console.log(this._filmPresenter);
+
+    //console.log(filmPresenter.isFor());
+
+    // Object.keys(this._filmPresenter).filter
   }
 
   _renderFilms(films, container) {
@@ -147,7 +155,11 @@ export default class FilmList {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[data.id].init(data);
+        Object.keys(this._filmPresenter)
+          .filter((presenterKey) => presenterKey.split(`-`)[0] === data.id)
+          .forEach((key) => {
+            this._filmPresenter[key].init(data);
+          });
         break;
       case UpdateType.FILTER:
         this._clearFilmList();
@@ -207,10 +219,8 @@ export default class FilmList {
   }
 
   _handleLoadMoreButtonClick() {
-    console.log(`Handle load more clicked`);
     this._filmBoardComponent.setShowMoreClickHandler(() => {
       const newRenderedCount = this._renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP;
-      console.log(`newRenderedCount = ` + newRenderedCount);
       const films = this._getFilms().slice(this._renderedFilmCount, newRenderedCount);
 
       this._renderFilms(
