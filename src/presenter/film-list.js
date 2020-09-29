@@ -180,7 +180,7 @@ export default class FilmList {
 
     const films = this._getFilms();
     const filmCount = films.length;
-    console.log(filmCount);
+    console.log(`filmCount from board` + filmCount);
 
     if (filmCount === 0) {
       this._renderEmptyBoard();
@@ -207,6 +207,7 @@ export default class FilmList {
   }
 
   _handleLoadMoreButtonClick() {
+    console.log(`clicked`);
     const filmCount = this._getFilms().length;
     const newRenderedFilmCount = Math.min(
         filmCount,
@@ -216,12 +217,16 @@ export default class FilmList {
     const films = this._getFilms().slice(this._renderedFilmCount, newRenderedFilmCount);
 
     this._filmBoardComponent.setShowMoreClickHandler(() => {
+      console.log(`clicked`);
       this._renderFilms(
           films,
           this._filmBoardComponent.getContainer()
       );
 
       this._renderedFilmCount = newRenderedFilmCount;
+
+      console.log(`this._renderedFilmCount = ` + this._renderedFilmCount);
+      console.log(`filmCount = ` + filmCount);
 
       if (this._renderedFilmCount >= filmCount) {
         this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
