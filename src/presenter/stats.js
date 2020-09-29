@@ -12,7 +12,7 @@ export default class Stats {
     this._handlePeriodChange = this._handlePeriodChange.bind(this);
   }
 
-  init(filterType) {
+  init(filterType = StatsFilterType.ALL) {
     // очищаем доску
     this._clearStatsBoard();
     // фильтруем фильмы
@@ -24,7 +24,7 @@ export default class Stats {
     );
 
     // создаем новую вьюшку
-    this._statsComponent = new StatsView(films);
+    this._statsComponent = new StatsView(films, filterType);
     this._statsComponent.setStatPeriodChangeHandler(this._handlePeriodChange);
     // отрисовываем новую вьюшку
     this._renderStatsBoard();
@@ -58,7 +58,7 @@ export default class Stats {
 
   _filtrateFilms(films, dateFrom) {
     return films.filter((film) => {
-      let watchingDate = new Date(film.watchingDate).getTime();
+      const watchingDate = new Date(film.watchingDate).getTime();
       return watchingDate >= dateFrom && watchingDate <= Date.now();
     });
   }

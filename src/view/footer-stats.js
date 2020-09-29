@@ -1,16 +1,21 @@
 import Abstract from "./abstract.js";
 
-const createStatsTemplate = () => {
+const createStatsTemplate = (amount) => {
   return (
     `<section class="footer__statistics">
-      <p>130 291 movies inside</p>
+      <p>${amount} movies inside</p>
     </section>`
   );
 };
 
 export default class Statistics extends Abstract {
+  constructor(amount) {
+    super();
+
+    this._amount = amount;
+  }
   getTemplate() {
-    return createStatsTemplate();
+    return createStatsTemplate(this._amount);
   }
 }
 

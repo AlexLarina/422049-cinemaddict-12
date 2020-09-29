@@ -3,7 +3,7 @@ import {capitalize, getMostFrequentElement, getElementsFrequency} from "./util.j
 import {PeriodsInSeconds} from "./const.js";
 
 const createGenresArray = (films) => {
-  let genresArray = [];
+  const genresArray = [];
   films.forEach((film) => genresArray.push(...film.genres));
   return genresArray;
 };

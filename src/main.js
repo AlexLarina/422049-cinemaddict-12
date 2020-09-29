@@ -36,7 +36,7 @@ const filterModel = new FilterModel();
 const sortComponent = new SortView();
 
 render(mainHeaderElement, new ProfileView());
-render(mainFooterElement, new FooterStatsView());
+//render(mainFooterElement, new FooterStatsView(filmsModel.getFilms().length));
 
 // @TO-DO заменить на apiWithProvider
 const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel, filterModel, api);
@@ -61,6 +61,7 @@ api.getFilms()
   .then((films) => {
     render(mainElement, sortComponent);
     filmsModel.setFilms(UpdateType.INIT, films);
+    render(mainFooterElement, new FooterStatsView(filmsModel.getFilms().length));
   })
   .catch(() => {
     render(mainElement, sortComponent);

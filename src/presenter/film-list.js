@@ -79,11 +79,6 @@ export default class FilmList {
     filmPresenter.init(filmItem);
     const presenterID = nanoid();
     this._filmPresenter[filmItem.id + `-` + presenterID] = filmPresenter;
-    console.log(this._filmPresenter);
-
-    //console.log(filmPresenter.isFor());
-
-    // Object.keys(this._filmPresenter).filter
   }
 
   _renderFilms(films, container) {
@@ -192,7 +187,6 @@ export default class FilmList {
 
     const films = this._getFilms();
     const filmCount = films.length;
-    console.log(`filmCount from board = ` + filmCount);
 
     if (filmCount === 0) {
       this._renderEmptyBoard();
