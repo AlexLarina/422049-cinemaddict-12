@@ -180,7 +180,7 @@ export default class FilmList {
 
     const films = this._getFilms();
     const filmCount = films.length;
-    console.log(`filmCount from board` + filmCount);
+    console.log(`filmCount from board = ` + filmCount);
 
     if (filmCount === 0) {
       this._renderEmptyBoard();
@@ -207,28 +207,20 @@ export default class FilmList {
   }
 
   _handleLoadMoreButtonClick() {
-    console.log(`clicked`);
-    const filmCount = this._getFilms().length;
-    const newRenderedFilmCount = Math.min(
-        filmCount,
-        this._renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP
-    );
-
-    const films = this._getFilms().slice(this._renderedFilmCount, newRenderedFilmCount);
-
+    console.log(`Handle load more clicked`);
     this._filmBoardComponent.setShowMoreClickHandler(() => {
-      console.log(`clicked`);
+      const newRenderedCount = this._renderedFilmCount + MAX_CARDS_SHOWN_PER_STEP;
+      console.log(`newRenderedCount = ` + newRenderedCount);
+      const films = this._getFilms().slice(this._renderedFilmCount, newRenderedCount);
+
       this._renderFilms(
           films,
           this._filmBoardComponent.getContainer()
       );
 
-      this._renderedFilmCount = newRenderedFilmCount;
+      this._renderedFilmCount = newRenderedCount;
 
-      console.log(`this._renderedFilmCount = ` + this._renderedFilmCount);
-      console.log(`filmCount = ` + filmCount);
-
-      if (this._renderedFilmCount >= filmCount) {
+      if (this._renderedFilmCount >= this._getFilms().length) {
         this._hideShowMoreButton(this._filmBoardComponent.getShowMoreButton());
       }
     });
