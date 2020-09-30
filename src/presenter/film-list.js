@@ -128,7 +128,6 @@ export default class FilmList {
       .forEach((filmPresenter) => filmPresenter.destroy());
     this._filmPresenter = {};
 
-    // @ TO-DO зачем его удалять, если он будет null. Добавить проверку ?
     remove(this._emptyComponent);
     remove(this._loadingComponent);
 

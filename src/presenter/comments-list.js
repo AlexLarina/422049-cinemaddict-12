@@ -71,6 +71,11 @@ export default class CommentList {
   }
 
   _handlePopupSubmit(comment) {
+    if (comment.comment.length === 0) {
+      this._commentsComponent.setNewCommentAreaAborted();
+      return;
+    }
+
     this._changeCommentData(CommentAction.ADD, comment);
   }
 }
