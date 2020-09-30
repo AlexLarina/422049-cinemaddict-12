@@ -22,4 +22,6 @@ const getMostFrequentElement = (array) => {
   return Object.keys(dict).find((key) => dict[key] === maxValue);
 };
 
-export {capitalize, generateId, getMostFrequentElement, getElementsFrequency};
+const cutDescription = (description, maxLength) => description.substring(0, maxLength - 1) + `...`;
+
+export {capitalize, generateId, getMostFrequentElement, getElementsFrequency, cutDescription};

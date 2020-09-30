@@ -69,3 +69,5 @@ export const RankTypesAmount = {
   },
   BUFF: 21
 };
+
+export const MAX_DESCRIPTION_LENGTH = 140;

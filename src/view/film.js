@@ -1,6 +1,8 @@
 import Abstract from "./abstract.js";
 
 import {formatReleaseYear, formatDuration} from "../lib/date.js";
+import {MAX_DESCRIPTION_LENGTH} from "../lib/const.js";
+import {cutDescription} from "../lib/util.js";
 
 const createFilmCardTemplate = (film) => {
   const {title, rating, releaseDate, duration, genres, poster, description, comments, toWatchList, isWatched, isFavourite} = film;
@@ -15,7 +17,10 @@ const createFilmCardTemplate = (film) => {
         <span class="film-card__genre">${genres.join(`, `)}</span>
       </p>
       <img src="./${poster}" alt="${poster.split(`.`)[0]}" class="film-card__poster">
-      <p class="film-card__description">${description}</p>
+      <p class="film-card__description">${
+    description.length > MAX_DESCRIPTION_LENGTH ?
+      cutDescription(description, MAX_DESCRIPTION_LENGTH) : description
+    }</p>
       <a class="film-card__comments">${comments.length} comments</a>
       <form class="film-card__controls">
         <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${toWatchList ? `film-card__controls-item--active` : ``}">Add to watchlist</button>
