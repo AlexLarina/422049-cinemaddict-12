@@ -4,6 +4,7 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {createStatsItems, sortgenresByFrequency} from "../lib/statistics.js";
 import {capitalize} from "../lib/util.js";
 import {StatsFilterType} from "../lib/const.js";
+import {appointUserRank} from "../lib/rank.js";
 
 import Smart from "./smart.js";
 
@@ -77,7 +78,7 @@ const createStatsTemplate = (films, filterType) => {
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">No one</span>
+        <span class="statistic__rank-label">${appointUserRank(films)}</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">

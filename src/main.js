@@ -1,13 +1,13 @@
 import {StatsFilterType, UpdateType} from "./lib/const.js";
 import {render} from "./lib/render.js";
 
-import ProfileView from "./view/profile.js";
 import SortView from "./view/sort.js";
 import FooterStatsView from "./view/footer-stats.js";
 
 import FilmListPresenter from "./presenter/film-list.js";
 import NavigationPresenter from "./presenter/navigation.js";
 import StatsPresenter from "./presenter/stats.js";
+import ProfilePresenter from "./presenter/profile.js";
 
 import FilmsModel from "./model/films.js";
 import FilterModel from "./model/filter.js";
@@ -35,9 +35,7 @@ const filterModel = new FilterModel();
 
 const sortComponent = new SortView();
 
-render(mainHeaderElement, new ProfileView());
-
-const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel, filterModel, apiWithProvider);
+const filmListPresenter = new FilmListPresenter(mainElement, sortComponent, filmsModel, filterModel, api);
 const statsPresenter = new StatsPresenter(mainElement, filmsModel);
 
 const statsShowHandler = () => {
@@ -50,12 +48,15 @@ const filmListInitHandler = () => {
   filmListPresenter.init();
 };
 
+const profilePresenter = new ProfilePresenter(mainHeaderElement, filmsModel);
 const navPresenter = new NavigationPresenter(mainElement, filterModel, filmsModel, filmListInitHandler, statsShowHandler);
 
+profilePresenter.init();
 navPresenter.init();
 filmListPresenter.init();
 
-apiWithProvider.getFilms()
+// @TO-DO return apiWithProvider
+api.getFilms()
   .then((films) => {
     render(mainElement, sortComponent);
     filmsModel.setFilms(UpdateType.INIT, films);
@@ -66,22 +67,22 @@ apiWithProvider.getFilms()
     filmsModel.setFilms(UpdateType.INIT, []);
   });
 
-window.addEventListener(`load`, () => {
-  navigator.serviceWorker.register(`/sw.js`)
-    .then(() => {
-      // Действие, в случае успешной регистрации ServiceWorker
-      console.log(`ServiceWorker available`); // eslint-disable-line
-    }).catch(() => {
-      // Действие, в случае ошибки при регистрации ServiceWorker
-      console.error(`ServiceWorker isn't available`); // eslint-disable-line
-    });
-});
+// window.addEventListener(`load`, () => {
+//   navigator.serviceWorker.register(`/sw.js`)
+//     .then(() => {
+//       // Действие, в случае успешной регистрации ServiceWorker
+//       console.log(`ServiceWorker available`); // eslint-disable-line
+//     }).catch(() => {
+//       // Действие, в случае ошибки при регистрации ServiceWorker
+//       console.error(`ServiceWorker isn't available`); // eslint-disable-line
+//     });
+// });
 
-window.addEventListener(`online`, () => {
-  document.title = document.title.replace(` [offline]`, ``);
-  apiWithProvider.sync();
-});
+// window.addEventListener(`online`, () => {
+//   document.title = document.title.replace(` [offline]`, ``);
+//   apiWithProvider.sync();
+// });
 
-window.addEventListener(`offline`, () => {
-  document.title += ` [offline]`;
-});
+// window.addEventListener(`offline`, () => {
+//   document.title += ` [offline]`;
+// });

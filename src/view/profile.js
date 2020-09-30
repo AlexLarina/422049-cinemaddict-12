@@ -1,9 +1,9 @@
 import Abstract from "./abstract.js";
 
-const createUserProfileTemplate = () => {
+const createUserProfileTemplate = (userRank) => {
   return (
     `<section class="header__profile profile">
-      <p class="profile__rating">Movie Buff</p>
+      <p class="profile__rating">${userRank}</p>
       <img
         class="profile__avatar"
         src="images/bitmap@2x.png"
@@ -16,8 +16,14 @@ const createUserProfileTemplate = () => {
 };
 
 export default class Profile extends Abstract {
+  constructor(userRank) {
+    super();
+
+    this._userRank = userRank;
+  }
+
   getTemplate() {
-    return createUserProfileTemplate();
+    return createUserProfileTemplate(this._userRank);
   }
 }
 

@@ -45,7 +45,6 @@ export default class FilmList {
     this._clearFilmList();
 
     remove(this._filmBoardComponent);
-    // ???
     remove(this._emptyComponent);
 
     this._filmsModel.removeObserver(this._handleModelEvent);

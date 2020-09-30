@@ -49,3 +49,23 @@ export const PeriodsInSeconds = {
 };
 
 export const MAX_CARDS_SHOWN_PER_STEP = 5;
+
+export const RankTypes = {
+  ZERO: ``,
+  NOVICE: `Novice`,
+  FAN: `Fan`,
+  BUFF: `Movie Buff`
+};
+
+export const RankTypesAmount = {
+  ZERO: 0,
+  NOVICE: {
+    MIN: 1,
+    MAX: 10
+  },
+  FAN: {
+    MIN: 11,
+    MAX: 20
+  },
+  BUFF: 21
+};
