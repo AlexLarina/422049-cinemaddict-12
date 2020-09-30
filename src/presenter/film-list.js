@@ -130,6 +130,7 @@ export default class FilmList {
 
     remove(this._emptyComponent);
     remove(this._loadingComponent);
+    remove(this._filmBoardComponent);
 
     this._renderedFilmCount = MAX_CARDS_SHOWN_PER_STEP;
 
@@ -153,6 +154,9 @@ export default class FilmList {
           .forEach((key) => {
             this._filmPresenter[key].init(data);
           });
+
+        this._clearFilmList();
+        this._renderFilmBoard();
         break;
       case UpdateType.FILTER:
         this._clearFilmList();
