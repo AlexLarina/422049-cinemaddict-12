@@ -49,7 +49,7 @@ export default class Film {
     const previousFilmComponent = this._filmComponent;
 
     if (this._mode !== Mode.POPUP) {
-      this._filmComponent = this._createFilmComponent();
+      this._filmComponent = this._createFilmComponent(this._film);
     }
 
     const previousPopupComponent = this._filmPopupComponent;
@@ -96,9 +96,22 @@ export default class Film {
         this._renderComments(comments);
       })
       .catch(() => {
-        // @TO-DO что показать, если комменты не подгрузились
         this._commentsListPresenter.init([]);
       });
+  }
+
+  _getUpdatedFilm() {
+    this._api
+      .getFilms()
+      .then((films) => {
+        const updatedCommentFilm = films.filter((film) => film.id === this._film.id)[0];
+
+        const previousFilmComponent = this._filmComponent;
+        this._filmComponent = this._createFilmComponent(updatedCommentFilm);
+        replace(this._filmComponent, previousFilmComponent);
+
+      })
+      .catch();
   }
 
   _renderComments(comments) {
@@ -113,8 +126,8 @@ export default class Film {
     }
   }
 
-  _createFilmComponent() {
-    const filmComponent = new FilmView(this._film);
+  _createFilmComponent(film) {
+    const filmComponent = new FilmView(film);
     filmComponent.setOpenPopupClickHandler(this._handleOpenPopupClick);
     filmComponent.setFavouriteClickHandler(this._handleFavouriteClick);
     filmComponent.setAddToWatchListClickHandler(this._handleAddToWatchListClick);
@@ -136,9 +149,7 @@ export default class Film {
   _hidePopup() {
     this._filmPopupComponent.getElement().remove();
 
-    const previousFilmComponent = this._filmComponent;
-    this._filmComponent = this._createFilmComponent();
-    replace(this._filmComponent, previousFilmComponent);
+    this._getUpdatedFilm();
 
     document.removeEventListener(`keydown`, this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
