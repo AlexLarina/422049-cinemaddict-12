@@ -82,25 +82,25 @@ export default class Navigation {
     return [
       {
         name: FilterType.ALL,
-        isSelected: (activeFilter === FilterType.ALL) ? true : false,
+        isSelected: activeFilter === FilterType.ALL,
         description: `All movies`,
         amount: filtrate[FilterType.ALL](films).length
       },
       {
         name: FilterType.WATCHLIST,
-        isSelected: (activeFilter === FilterType.WATCHLIST) ? true : false,
+        isSelected: activeFilter === FilterType.WATCHLIST,
         description: `Watchlist`,
         amount: filtrate[FilterType.WATCHLIST](films).length
       },
       {
         name: FilterType.HISTORY,
-        isSelected: (activeFilter === FilterType.HISTORY) ? true : false,
+        isSelected: activeFilter === FilterType.HISTORY,
         description: `History`,
         amount: filtrate[FilterType.HISTORY](films).length
       },
       {
         name: FilterType.FAVOURITES,
-        isSelected: (activeFilter === FilterType.FAVOURITES) ? true : false,
+        isSelected: activeFilter === FilterType.FAVOURITES,
         description: `Favorites`,
         amount: filtrate[FilterType.FAVOURITES](films).length
       }
